@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap"><style>body{margin:0;background:#e9ebed;font-family:'Noto Sans JP',sans-serif;font-weight:400;font-size:14px;line-height:22px;color:#222222}a{color:#5799DB}a:hover{color:#23814D}button{font-family:inherit}</style></helmet>
+<div style="width:1440px;margin:0 auto;padding:20px 0 40px;display:flex;flex-direction:column;gap:16px">
+
+<div style="position:relative;width:1440px;height:900px;background:#fff;overflow:hidden;border:1px solid #E0E0E0;border-radius:6px">
+<div style="position:absolute;left:0;top:0;bottom:0;width:250px;border-right:1px solid #E0E0E0;background:#fff;padding:14px 0;box-sizing:border-box">
+<div style="display:flex;align-items:center;gap:8px;padding:0 24px 18px"><div style="width:30px;height:30px;border-radius:50%;background:#08BF5A"></div><div style="font-weight:600;font-size:22px;color:#08BF5A;letter-spacing:1px">L Message</div></div>
+<div style="font-size:12px;line-height:16px;color:#999;padding:8px 24px">お気に入り</div>
+<div style="font-size:12px;line-height:16px;color:#999;padding:8px 24px">メッセージ関連</div>
+<sc-for list="{{ nav }}" as="n" hint-placeholder-count="8"><div style="{{ n.style }}"><span style="width:16px;height:16px;border:1.5px solid #555;border-radius:3px;box-sizing:border-box"></span>{{ n.t }}</div></sc-for>
+</div>
+<div style="position:absolute;left:250px;right:0;top:0;height:70px;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;gap:16px;padding:0 24px">
+<div style="width:520px;height:54px;border:1px solid #E0E0E0;border-radius:10px;display:flex;align-items:center;padding:0 16px;box-sizing:border-box;font-weight:500">KESH | Hair Salon</div>
+<div style="flex:1"></div>
+<div style="border:1px solid #5799DB;color:#5799DB;border-radius:4px;padding:8px 16px;font-size:14px">アップグレード</div>
+<div style="font-size:12px;line-height:16px;color:#444;display:flex;gap:22px"><span>配信数</span><span>サポート</span><span>お知らせ</span></div>
+<div style="width:260px;height:54px;border:1px solid #E0E0E0;border-radius:10px;display:flex;align-items:center;padding:0 16px;box-sizing:border-box;font-weight:500">神田史</div>
+</div>
+<div style="position:absolute;left:250px;right:0;top:70px;bottom:0;background:#F8F8F8;padding:30px 120px;overflow-x:hidden;box-sizing:border-box">
+<div style="font-weight:500;font-size:20px;margin-bottom:16px">リッチメニュー編集</div>
+<div style="background:#fff;border:1px solid #E0E0E0;border-radius:6px;padding:20px;width:100%;max-width:760px;box-sizing:border-box"><div style="font-weight:600">エリアタップ時のアクション</div><div style="margin-top:12px;border:1px solid #E0E0E0;padding:16px 18px;border-radius:6px;font-size:14px;line-height:1.6;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap"><span style="font-weight:600;white-space:nowrap">エリア1</span><span style="{{ areaChip }};white-space:nowrap">{{ areaStatus }}</span></div>
+<sc-if value="{{ hasSavedActs }}"><div style="display:flex;flex-direction:column;gap:8px;border-top:1px solid #E0E0E0;padding-top:12px"><sc-for list="{{ savedActs }}" as="a" hint-placeholder-count="1"><div style="display:flex;flex-direction:column;gap:2px;font-size:14px"><div style="display:flex;gap:6px"><span style="color:#888888;white-space:nowrap">アクション：</span><span style="font-weight:600;min-width:0;word-break:break-word">{{ a.kind }}</span></div><div style="display:flex;gap:6px"><span style="color:#888888;white-space:nowrap">{{ a.detailLabel }}：</span><span style="color:#222222;min-width:0;word-break:break-word">{{ a.detail }}</span></div></div></sc-for></div></sc-if>
+<sc-if value="{{ areaCheckOff }}"><div style="font-size:14px;color:#666;border-top:1px solid #E0E0E0;padding-top:12px">{{ area1Sum }}</div></sc-if>
+<div style="display:flex;gap:8px;flex-wrap:wrap;border-top:1px solid #E0E0E0;padding-top:12px"><button onClick="{{ reopen1 }}" style="height:34px;padding:0 18px;border:1px solid #5799DB;background:#fff;color:#5799DB;font-weight:400;font-size:14px;border-radius:6px;cursor:pointer;white-space:nowrap">設定内容を確認・変更</button><button onClick="{{ areaCheck }}" style="{{ areaCheckStyle }};padding:0 18px;white-space:nowrap">動作を確認</button></div>
+<sc-if value="{{ areaCheckOff }}"><div style="font-size:12px;line-height:16px;color:#888888">{{ areaCheckWhy }}</div></sc-if></div></div>
+</div>
+<sc-if value="{{ anyModal }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.58)"></div></sc-if>
+
+<sc-if value="{{ s1 }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none"><div style="pointer-events:auto;width:1140px;max-height:828px;background:#fff;border-radius:8px;display:flex;flex-direction:column;box-shadow:0 10px 40px rgba(0,0,0,.3)">
+<div style="padding:20px 32px 16px;border-bottom:1px solid #E0E0E0;display:flex;align-items:flex-start;gap:12px">
+<button onClick="{{ close }}" style="border:0;background:none;font-size:14px;color:#555;cursor:pointer;padding:6px 0">‹ 戻る</button>
+<div style="flex:1;text-align:center"><div style="font-size:24px;font-weight:500;line-height:32px">タップ時のアクション設定</div>
+<div style="font-size:12px;line-height:16px;color:#888888;margin-top:4px">エリア1</div></div>
+<button onClick="{{ close }}" style="border:0;background:none;font-size:26px;color:#444;cursor:pointer;line-height:1">✕</button></div>
+<div id="a1body" style="flex:0 1 auto;min-height:0;overflow:auto;background:#F8F8F8;padding:20px 56px 24px;display:flex;flex-direction:column;gap:12px">
+<div style="font-size:14px;font-weight:400;color:#222222">送信するテンプレートを選択、または新規作成してください。</div>
+<sc-for list="{{ acts }}" as="a" hint-placeholder-count="2"><div id="{{ a.domId }}" style="{{ a.cardStyle }}">
+<div onClick="{{ a.toggle }}" style="display:flex;align-items:center;gap:10px;cursor:pointer"><span style="font-size:12px;line-height:16px;font-weight:600;color:#555;background:#eef1f3;border-radius:4px;padding:3px 8px">{{ a.chipLabel }}</span><span style="font-weight:500;font-size:16px;line-height:24px">{{ a.headTitle }}</span><span style="{{ a.chip }}">{{ a.status }}</span><div style="flex:1"></div>
+<sc-if value="{{ a.confirming }}"><span style="font-size:14px;color:#222222">このアクションを削除しますか？</span><button onClick="{{ a.cancelDel }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 12px;font-size:14px;cursor:pointer;color:#222222">キャンセル</button><button onClick="{{ a.doDel }}" style="height:30px;padding:0 12px;border:0;border-radius:5px;background:#333;color:#fff;font-size:14px;cursor:pointer">削除する</button></sc-if>
+<sc-if value="{{ a.normal }}"><span style="height:30px;display:flex;align-items:center;gap:4px;font-size:14px;color:#555;padding:0 6px">{{ a.chevText }}<span style="font-size:16px">{{ a.chev }}</span></span><button onClick="{{ a.askDel }}" title="削除" style="width:30px;height:30px;border:0;background:none;border-radius:5px;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#eef1f3"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button></sc-if></div>
+<sc-if value="{{ a.isOpen }}">
+<sc-if value="{{ a.isTpl }}"><div style="margin-top:14px;border-top:1px solid #E0E0E0;padding-top:14px">
+<div style="display:flex;gap:10px;align-items:center">
+<select value="{{ cat }}" onChange="{{ setCat }}" style="height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 10px;font-size:14px;font-family:inherit;background:#fff;width:150px"><option value="すべて">すべての分類</option><option value="未分類">未分類</option><option value="お客様向け">お客様向け</option></select>
+<div style="flex:1;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;height:40px;display:flex;align-items:center;gap:8px;background:#fff"><span style="color:#999">⌕</span><input value="{{ q }}" onInput="{{ setQ }}" placeholder="既存のテンプレートを検索" style="border:0;outline:0;flex:1;font-size:14px;font-family:inherit"></div>
+<button onClick="{{ a.create }}" style="height:40px;padding:0 18px;border:1.5px solid #08BF5A;background:#fff;color:#23814D;font-weight:600;font-size:14px;border-radius:6px;cursor:pointer">＋ 新しいテンプレートを作成</button></div>
+<div style="margin-top:10px;border:1px solid #E0E0E0;border-radius:6px;max-height:190px;overflow:auto;display:flex;flex-direction:column">
+<sc-for list="{{ a.rows }}" as="r" hint-placeholder-count="3"><div onClick="{{ r.pick }}" style="{{ r.style }}"><span style="{{ r.dot }}"></span><span style="flex:1;font-size:14px">{{ r.name }}</span><sc-if value="{{ r.isNew }}"><span style="background:#08BF5A;color:#fff;font-size:12px;line-height:16px;font-weight:600;padding:2px 8px;border-radius:10px">NEW</span></sc-if></div></sc-for>
+<sc-if value="{{ a.noRows }}"><div style="padding:24px;text-align:center;color:#888888;font-size:14px">該当するテンプレートがありません</div></sc-if></div></div></sc-if>
+<sc-if value="{{ a.isText }}"><div style="margin-top:12px;position:relative">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><span style="font-size:14px;font-weight:400;flex:1">{{ a.label }} <span style="color:#F44336">＊</span></span>
+<button onClick="{{ a.insName }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 12px;font-size:14px;cursor:pointer;color:#222222">＋LINE名</button>
+<button data-anc="{{ a.aid }}-f" onClick="{{ a.togFriend }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 12px;font-size:14px;cursor:pointer;color:#222222">＋友だち情報 ⌄</button>
+<button data-anc="{{ a.aid }}-e" onClick="{{ a.togEmoji }}" title="絵文字" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;width:34px;font-size:16px;cursor:pointer;color:#222222">☺</button></div>
+<sc-if value="{{ a.popFriend }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:400px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;display:flex;overflow:hidden">
+<div style="width:140px;background:#F8F8F8;padding:8px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #E0E0E0"><sc-for list="{{ a.fcats }}" as="c" hint-placeholder-count="3"><div onClick="{{ c.pick }}" style="{{ c.style }}"><span>{{ c.name }}</span><span>›</span></div></sc-for></div>
+<div style="flex:1;padding:8px;min-height:200px;display:flex;flex-direction:column"><sc-for list="{{ a.fitems }}" as="f" hint-placeholder-count="4"><div onClick="{{ f.add }}" style="padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px" style-hover="background:#eef1f3">{{ f.name }}</div></sc-for>
+<sc-if value="{{ a.fempty }}"><div style="margin:auto;font-size:14px;color:#888888;text-align:center">登録済みの項目はありません</div></sc-if></div></div></sc-if>
+<sc-if value="{{ a.popEmoji }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:240px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:8px;z-index:50;display:flex;flex-wrap:wrap;gap:2px"><sc-for list="{{ a.emojis }}" as="m" hint-placeholder-count="16"><div onClick="{{ m.add }}" style="width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;border-radius:4px" style-hover="background:#eef1f3">{{ m.ch }}</div></sc-for></div></sc-if>
+<textarea id="{{ a.taId }}" value="{{ a.val }}" onInput="{{ a.setVal }}" placeholder="{{ a.ph }}" style="width:100%;box-sizing:border-box;height:150px;border:1px solid #E0E0E0;border-radius:6px;padding:12px 14px;font-size:14px;font-family:inherit;resize:none;line-height:1.6"></textarea>
+<div style="display:flex;gap:12px;margin-top:4px"><span style="flex:1;font-size:12px;line-height:16px;color:#888888">{{ a.pv }}</span><span style="font-size:12px;line-height:16px;color:#888888">{{ a.count }} / 5,000</span></div>
+<div style="border-top:1px solid #E0E0E0;margin-top:10px;padding-top:10px">
+<div onClick="{{ a.filterToggle }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定 {{ a.filterChev }}<span style="{{ a.filterChip }}">{{ a.filterLabel }}</span></div>
+<sc-if value="{{ a.filterOpen }}"><div style="display:flex;gap:10px;margin-top:10px"><div data-anc="{{ a.aid }}-fl" onClick="{{ a.flTog }}" style="width:200px;box-sizing:border-box;height:38px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ a.flLabel }}</span><span style="color:#777">⌄</span></div><sc-if value="{{ a.popFl }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:200px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.flItems }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if>
+<sc-if value="{{ a.hasCond }}"><input value="{{ a.cond }}" onInput="{{ a.setCond }}" placeholder="{{ a.condPh }}" style="flex:1;height:38px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"></sc-if></div></sc-if></div>
+</div></sc-if>
+<sc-if value="{{ a.isTag }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">操作</div><div data-anc="{{ a.aid }}-top" onClick="{{ a.tOpTog }}" style="width:200px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ a.opVal }}</span><span style="color:#777">⌄</span></div><sc-if value="{{ a.popTop }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:200px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.tOpItems }}" as="o" hint-placeholder-count="2"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if></div>
+<div><div style="display:flex;align-items:center;margin-bottom:6px"><span style="font-size:14px;font-weight:400;flex:1">対象のタグ <span style="color:#F44336">＊</span></span><button onClick="{{ a.openTagModal }}" style="height:32px;padding:0 14px;border:1.5px solid #08BF5A;background:#fff;color:#23814D;font-weight:600;font-size:14px;border-radius:6px;cursor:pointer">＋ タグ新規追加</button></div>
+<div style="display:flex;border:1px solid #E0E0E0;border-radius:6px;overflow:hidden;height:170px">
+<div style="width:180px;background:#F8F8F8;padding:8px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #E0E0E0;overflow:auto"><sc-for list="{{ a.tfolders }}" as="c" hint-placeholder-count="2"><div onClick="{{ c.pick }}" style="{{ c.style }}"><span>{{ c.name }}</span><span>›</span></div></sc-for></div>
+<div style="flex:1;overflow:auto;display:flex;flex-direction:column"><sc-for list="{{ a.titems }}" as="t" hint-placeholder-count="3"><div onClick="{{ t.pick }}" style="{{ t.style }}"><span style="{{ t.dot }}"></span><span style="font-size:14px">{{ t.name }}</span></div></sc-for>
+<sc-if value="{{ a.tEmpty }}"><div style="margin:auto;font-size:14px;color:#888888">登録済みのタグはありません</div></sc-if></div></div>
+<div style="font-size:14px;margin-top:8px;color:#222222">設定内容：<b>{{ a.tSummary }}</b></div></div>
+<div style="border-top:1px solid #E0E0E0;padding-top:10px"><div onClick="{{ a.openUpg }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定<span style="font-size:12px;line-height:16px;font-weight:500;color:#666;background:#eef1f3;border-radius:10px;padding:2px 10px">絞込 未設定</span></div></div>
+</div></sc-if>
+<sc-if value="{{ a.isBm }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:28px"><sc-for list="{{ a.bmOpts }}" as="o" hint-placeholder-count="2"><div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><span style="{{ o.dot }}"></span>{{ o.label }}</div></sc-for></div>
+<div style="border-top:1px solid #E0E0E0;padding-top:10px"><div onClick="{{ a.bmUpg }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定<span style="font-size:12px;line-height:16px;font-weight:500;color:#666;background:#eef1f3;border-radius:10px;padding:2px 10px">絞込 未設定</span></div></div>
+</div></sc-if>
+<sc-if value="{{ a.isFr }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">操作</div><div data-anc="{{ a.aid }}-fop" onClick="{{ a.frOpTog }}" style="width:320px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ a.frOpVal }}</span><span style="color:#777">⌄</span></div><sc-if value="{{ a.popFop }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:320px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.frOpItems }}" as="o" hint-placeholder-count="2"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if></div>
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">友だち情報選択 <span style="color:#F44336">＊</span></div>
+<div data-anc="{{ a.aid }}-fi" onClick="{{ a.frTog }}" style="{{ a.frBoxStyle }}"><span style="{{ a.frBoxText }}">{{ a.frBoxLabel }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ a.frTargetErr }}"><div style="color:#b4690e;font-size:14px;margin-top:6px">友だち情報を選択してください</div></sc-if>
+<sc-if value="{{ a.popFi }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:440px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;display:flex;overflow:hidden">
+<div style="width:150px;background:#F8F8F8;padding:8px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #E0E0E0"><sc-for list="{{ a.fiCats }}" as="c" hint-placeholder-count="3"><div onClick="{{ c.pick }}" style="{{ c.style }}"><span>{{ c.name }}</span><span>›</span></div></sc-for></div>
+<div style="flex:1;padding:8px;min-height:200px;display:flex;flex-direction:column"><sc-for list="{{ a.fiItems }}" as="f" hint-placeholder-count="4"><div onClick="{{ f.pick }}" style="{{ f.style }}">{{ f.name }}</div></sc-for>
+<sc-if value="{{ a.fiEmpty }}"><div style="margin:auto;font-size:14px;color:#888888;text-align:center">登録済みの項目はありません</div></sc-if></div></div></sc-if></div>
+<div style="font-size:14px;color:#222222">設定内容：<b>{{ a.frSummary }}</b></div>
+<sc-if value="{{ a.isReg }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">登録する値 <span style="color:#F44336">＊</span></div><input value="{{ a.frVal }}" onInput="{{ a.setFrVal }}" placeholder="登録する値を入力" style="width:360px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"><sc-if value="{{ a.frValErr }}"><div style="color:#b4690e;font-size:14px;margin-top:6px">登録する値を入力してください</div></sc-if></div></sc-if>
+<div style="border-top:1px solid #E0E0E0;padding-top:10px"><div onClick="{{ a.bmUpg }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定<span style="font-size:12px;line-height:16px;font-weight:500;color:#666;background:#eef1f3;border-radius:10px;padding:2px 10px">絞込 未設定</span></div></div>
+</div></sc-if>
+<sc-if value="{{ a.isSt }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">対応ステータス設定</div>
+<div data-anc="{{ a.aid }}-sop" onClick="{{ a.stOpTog }}" style="width:320px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ a.stOpLabel }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ a.popSop }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:320px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.stOpItems }}" as="o" hint-placeholder-count="2"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if></div>
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">対応ステータス選択 <span style="color:#F44336">＊</span></div>
+<div data-anc="{{ a.aid }}-sst" onClick="{{ a.stTog }}" style="{{ a.stBoxStyle }}"><span style="{{ a.stBoxText }}">{{ a.stBoxLabel }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ a.stErr }}"><div style="color:#b4690e;font-size:14px;margin-top:6px">ステータスを選択してください</div></sc-if>
+<sc-if value="{{ a.popSst }}"><div style="width:320px;box-sizing:border-box;margin-top:4px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.stItems }}" as="o" hint-placeholder-count="5"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if></div>
+<div style="font-size:14px;color:#222222">設定内容：<b>{{ a.stSummary }}</b></div>
+<div style="border-top:1px solid #E0E0E0;padding-top:10px"><div onClick="{{ a.bmUpg }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定<span style="font-size:12px;line-height:16px;font-weight:500;color:#666;background:#eef1f3;border-radius:10px;padding:2px 10px">絞込 未設定</span></div></div>
+</div></sc-if>
+<sc-if value="{{ a.isBl }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;gap:28px;flex-wrap:wrap"><sc-for list="{{ a.blOpts }}" as="o" hint-placeholder-count="4"><div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><span style="{{ o.dot }}"></span>{{ o.label }}</div></sc-for></div>
+<div style="font-size:14px;color:#222222">設定内容：<b>{{ a.blSummary }}</b></div>
+<div style="border-top:1px solid #E0E0E0;padding-top:10px"><div onClick="{{ a.bmUpg }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定<span style="font-size:12px;line-height:16px;font-weight:500;color:#666;background:#eef1f3;border-radius:10px;padding:2px 10px">絞込 未設定</span></div></div>
+</div></sc-if>
+<sc-if value="{{ a.isStp }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">配信設定</div>
+<div data-anc="{{ a.aid }}-stop" onClick="{{ a.stpOpTog }}" style="width:320px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ a.stpOp }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ a.stpOpOpen }}"><div style="width:320px;box-sizing:border-box;margin-top:4px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.stpOpItems }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if></div>
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">ステップ選択 <span style="color:#F44336">＊</span></div>
+<div data-anc="{{ a.aid }}-stst" onClick="{{ a.stpTgTog }}" style="{{ a.stpTgStyle }}"><span style="{{ a.stpTgText }}">{{ a.stpTgLabel }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ a.stpTgErr }}"><div style="color:#b4690e;font-size:14px;margin-top:6px">対象のステップ配信を選択してください</div></sc-if>
+<sc-if value="{{ a.stpTgOpen }}"><div style="width:440px;box-sizing:border-box;margin-top:4px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;display:flex;overflow:hidden">
+<div style="width:150px;background:#F8F8F8;padding:8px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #E0E0E0"><sc-for list="{{ a.stpFolders }}" as="c" hint-placeholder-count="1"><div style="{{ c.style }}"><span>{{ c.name }}</span><span>›</span></div></sc-for></div>
+<div style="flex:1;padding:8px;display:flex;flex-direction:column"><sc-for list="{{ a.stpItems }}" as="f" hint-placeholder-count="4"><div onClick="{{ f.pick }}" style="{{ f.style }}"><span style="flex:1">{{ f.name }}</span><sc-if value="{{ f.sample }}"><span style="font-size:12px;line-height:16px;color:#888888;background:#eef1f3;border-radius:8px;padding:1px 8px">サンプル</span></sc-if></div></sc-for></div></div></sc-if></div>
+<sc-if value="{{ a.stpMid }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">メッセージ選択</div><div style="display:flex;align-items:center;gap:10px"><input type="number" min="0" step="1" value="{{ a.stpDay }}" onInput="{{ a.setStpDay }}" style="width:88px;box-sizing:border-box;height:40px;border:1px solid {{ a.stpDayBorder }};border-radius:6px;padding:0 8px 0 12px;font-size:14px;font-family:inherit"><span style="font-size:14px;color:#222222">日目のメッセージから配信</span></div>
+<sc-if value="{{ a.stpDayErr }}"><div style="color:#b4690e;font-size:14px;margin-top:6px">開始日数を0以上の整数で入力してください</div></sc-if></div></sc-if>
+<div style="font-size:14px;color:#222222">設定内容：<b>{{ a.stpSummary }}</b></div>
+<div style="border-top:1px solid #E0E0E0;padding-top:10px"><div onClick="{{ a.bmUpg }}" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定<span style="font-size:12px;line-height:16px;font-weight:500;color:#666;background:#eef1f3;border-radius:10px;padding:2px 10px">絞込 未設定</span></div></div>
+</div></sc-if>
+<sc-if value="{{ a.isGen }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:12px">
+<sc-if value="{{ a.hasOps }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">操作</div><select value="{{ a.opVal }}" onChange="{{ a.setOp }}" style="height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 10px;font-size:14px;font-family:inherit;background:#fff;width:280px"><sc-for list="{{ a.opOpts }}" as="o" hint-placeholder-count="2"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></div></sc-if>
+<sc-if value="{{ a.hasT }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">{{ a.tLabel }} <span style="color:#F44336">＊</span></div><select value="{{ a.tVal }}" onChange="{{ a.setT }}" style="height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 10px;font-size:14px;font-family:inherit;background:#fff;width:280px"><sc-for list="{{ a.tOpts }}" as="o" hint-placeholder-count="3"><option value="{{ o.v }}">{{ o.l }}</option></sc-for></select></div></sc-if>
+<sc-if value="{{ a.hasV }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">{{ a.vLabel }} <span style="color:#F44336">＊</span></div><input value="{{ a.val }}" onInput="{{ a.setVal }}" placeholder="値を入力" style="width:360px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"></div></sc-if>
+<sc-if value="{{ a.isTemp }}"><div style="font-size:12px;line-height:16px;color:#888888">※仮の設定UIです。実際の設定項目は今後の確認に合わせて修正します。</div></sc-if></div></sc-if>
+<sc-if value="{{ a.isRemind }}"><div style="margin-top:12px;display:flex;flex-direction:column;gap:14px">
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">配信設定</div><div data-anc="{{ a.aid }}-op" onClick="{{ a.rOpTog }}" style="width:360px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ a.rOpLabel }}</span><span style="color:#777">⌄</span></div><sc-if value="{{ a.popOp }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:360px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.opItems }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if></div>
+<div style="position:relative"><div style="font-size:14px;font-weight:400;margin-bottom:6px">リマインド選択 <span style="color:#F44336">＊</span></div>
+<div data-anc="{{ a.aid }}-r" onClick="{{ a.rTog }}" style="width:480px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span style="{{ a.rNameStyle }}">{{ a.rName }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ a.popR }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:440px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;display:flex;overflow:hidden">
+<div style="width:150px;background:#F8F8F8;padding:8px;display:flex;flex-direction:column;gap:4px;border-right:1px solid #E0E0E0"><sc-for list="{{ a.rcats }}" as="c" hint-placeholder-count="2"><div onClick="{{ c.pick }}" style="{{ c.style }}"><span>{{ c.name }}</span><span>›</span></div></sc-for></div>
+<div style="flex:1;padding:8px;min-height:150px;display:flex;flex-direction:column"><sc-for list="{{ a.ritems }}" as="r" hint-placeholder-count="2"><div onClick="{{ r.pick }}" style="padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px" style-hover="background:#eef1f3">{{ r.name }}</div></sc-for>
+<sc-if value="{{ a.rEmpty }}"><div style="margin:auto;font-size:14px;color:#888888;text-align:center">登録済みのリマインドはありません</div></sc-if></div></div></sc-if></div>
+<div style="position:relative"><div style="font-size:14px;font-weight:400;margin-bottom:6px">配信終了日時</div>
+<div style="display:flex;align-items:center;gap:10px">
+<div data-anc="{{ a.aid }}-d" onClick="{{ a.dateTog }}" style="{{ a.dateBox }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg><span style="{{ a.dateStyle }}">{{ a.dateText }}</span></div>
+<div data-anc="{{ a.aid }}-t" onClick="{{ a.timeTog }}" style="{{ a.timeBox }}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span style="{{ a.timeStyle }}">{{ a.timeText }}</span></div>
+<span style="font-size:14px;color:#222222">に配信終了</span></div>
+<sc-if value="{{ a.dtErr }}"><div style="color:#F44336;font-size:14px;margin-top:6px">配信終了日時を入力してください</div></sc-if>
+<sc-if value="{{ a.isStop }}"><div style="color:#888888;font-size:12px;line-height:16px;margin-top:6px">※停止時の配信終了日時の要否は未確認のため、現在は任意としています。</div></sc-if>
+<sc-if value="{{ a.popD }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:280px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;padding:12px">
+<div style="display:flex;align-items:center;margin-bottom:8px"><button onClick="{{ a.calPrev }}" style="border:0;background:none;cursor:pointer;font-size:16px;width:28px">‹</button><div style="flex:1;text-align:center;font-weight:600;font-size:14px">{{ a.calTitle }}</div><button onClick="{{ a.calNext }}" style="border:0;background:none;cursor:pointer;font-size:16px;width:28px">›</button></div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px;line-height:16px;color:#888888;margin-bottom:4px"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px"><sc-for list="{{ a.cells }}" as="d" hint-placeholder-count="35"><div onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</div></sc-for></div></div></sc-if>
+<sc-if value="{{ a.popT }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:170px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;display:flex;padding:6px;gap:6px">
+<div style="flex:1;max-height:200px;overflow:auto"><div style="font-size:12px;line-height:16px;color:#888888;text-align:center;padding:2px">時</div><sc-for list="{{ a.hours }}" as="h" hint-placeholder-count="24"><div onClick="{{ h.pick }}" style="{{ h.style }}">{{ h.label }}</div></sc-for></div>
+<div style="flex:1;max-height:200px;overflow:auto"><div style="font-size:12px;line-height:16px;color:#888888;text-align:center;padding:2px">分</div><sc-for list="{{ a.mins }}" as="h" hint-placeholder-count="12"><div onClick="{{ h.pick }}" style="{{ h.style }}">{{ h.label }}</div></sc-for></div></div></sc-if></div>
+<div style="border-top:1px solid #E0E0E0;padding-top:10px">
+<div onClick="{{ a.filterToggle }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;color:#5799DB;font-weight:500">絞り込み設定 {{ a.filterChev }}<span style="{{ a.filterChip }}">{{ a.filterLabel }}</span></div>
+<sc-if value="{{ a.filterOpen }}"><div style="display:flex;gap:10px;margin-top:10px"><div data-anc="{{ a.aid }}-fl" onClick="{{ a.flTog }}" style="width:200px;box-sizing:border-box;height:38px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ a.flLabel }}</span><span style="color:#777">⌄</span></div><sc-if value="{{ a.popFl }}"><div data-popup="1" style="position:fixed;visibility:hidden;left:0;top:0;width:200px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:50;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ a.flItems }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if>
+<sc-if value="{{ a.hasCond }}"><input value="{{ a.cond }}" onInput="{{ a.setCond }}" placeholder="{{ a.condPh }}" style="flex:1;height:38px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"></sc-if></div></sc-if></div>
+</div></sc-if>
+</sc-if>
+<sc-if value="{{ a.isClosed }}"><div style="font-size:14px;color:#555;margin-top:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.summary }}</div></sc-if>
+<sc-if value="{{ a.showErr }}"><div style="color:#b4690e;font-size:14px;font-weight:400;margin-top:8px">{{ a.err }}</div></sc-if>
+</div></sc-for>
+<sc-if value="{{ showAdd }}"><div style="position:relative;display:flex;align-items:center;gap:14px;margin-top:2px">
+<button onClick="{{ toggleMenu }}" style="height:40px;padding:0 20px;border:1.5px solid #5799DB;background:#fff;color:#5799DB;font-weight:600;font-size:14px;border-radius:6px;cursor:pointer">＋ ほかのアクションを追加</button>
+<span style="font-size:14px;color:#666">メッセージ送信やタグ付けなど、複数の動作を組み合わせられます。</span>
+<sc-if value="{{ menuOpen }}"><div style="position:absolute;bottom:46px;left:0;width:560px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:12px;display:flex;flex-wrap:wrap;gap:8px;z-index:5">
+<sc-if value="{{ mmMain }}"><sc-for list="{{ menu }}" as="m" hint-placeholder-count="4"><button onClick="{{ m.add }}" style="padding:8px 16px;border:1px solid #E0E0E0;background:#fff;border-radius:20px;font-size:14px;cursor:pointer">＋ {{ m.name }}</button></sc-for><button onClick="{{ menuMore.add }}" style="padding:8px 16px;border:1px dashed #9ab;background:#fff;color:#5799DB;border-radius:20px;font-size:14px;cursor:pointer">＋ その他のアクションを見る ›</button></sc-if>
+<sc-if value="{{ mmAll }}"><div style="width:100%"><div style="display:flex;align-items:center;margin-bottom:10px"><button onClick="{{ backMenu }}" style="border:0;background:none;cursor:pointer;font-size:14px;color:#5799DB">‹ 戻る</button><span style="flex:1;text-align:center;font-weight:600;font-size:14px;margin-right:36px">すべてのアクション</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><sc-for list="{{ menuAll }}" as="m" hint-placeholder-count="9"><button onClick="{{ m.add }}" style="padding:10px 12px;border:1px solid #E0E0E0;background:#fff;border-radius:6px;font-size:14px;cursor:pointer;text-align:left" style-hover="background:#eef1f3">{{ m.name }}</button></sc-for></div></div></sc-if></div></sc-if>
+</div></sc-if></div>
+<div style="padding:14px 32px;border-top:1px solid #E0E0E0;display:flex;align-items:center;gap:12px;justify-content:flex-end">
+<span style="{{ hintStyle }}">{{ hint1 }}</span>
+<button onClick="{{ close }}" style="height:44px;padding:0 28px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">キャンセル</button>
+<button onClick="{{ save1 }}" style="{{ saveStyle }}">保存</button></div></div>
+<sc-if value="{{ tmOpen }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);pointer-events:auto;display:flex;align-items:center;justify-content:center"><div style="width:560px;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.3)">
+<div style="display:flex;align-items:center;padding:18px 24px;border-bottom:1px solid #E0E0E0"><div style="flex:1;font-size:20px;font-weight:500;line-height:28px">タグ新規追加</div><button onClick="{{ tmClose }}" style="border:0;background:none;font-size:24px;color:#444;cursor:pointer;line-height:1">✕</button></div>
+<div style="padding:20px 24px;display:flex;flex-direction:column;gap:18px">
+<div style="position:relative"><div style="font-size:14px;font-weight:600;margin-bottom:6px">追加するフォルダ選択</div>
+<div onClick="{{ tmFoldTog }}" style="height:40px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;cursor:pointer"><span>{{ tmFolder }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ tmFopen }}"><div style="position:absolute;left:0;right:0;top:66px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:6px;z-index:3;display:flex;flex-direction:column"><sc-for list="{{ tmFolders }}" as="f" hint-placeholder-count="2"><div onClick="{{ f.pick }}" style="{{ f.style }}">{{ f.name }}</div></sc-for></div></sc-if></div>
+<div><div style="display:flex;margin-bottom:6px"><span style="font-size:14px;font-weight:600;flex:1">追加するタグ名 <span style="color:#F44336">＊</span></span><span style="font-size:12px;line-height:16px;color:#888888">{{ tmCount }}/50</span></div><input value="{{ tmName }}" onInput="{{ setTmName }}" placeholder="例：来店予約済み" style="width:100%;box-sizing:border-box;height:42px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"></div></div>
+<div style="padding:16px 24px;border-top:1px solid #E0E0E0;display:flex;gap:10px;justify-content:flex-end"><button onClick="{{ tmClose }}" style="height:42px;padding:0 24px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">戻る</button><button onClick="{{ tmSave }}" style="{{ tmSaveStyle }}">保存してアクション設定に戻る</button></div></div></div></sc-if>
+<sc-if value="{{ upgOpen }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);pointer-events:auto;display:flex;align-items:center;justify-content:center"><div style="width:520px;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.3);padding:28px 30px">
+<div style="font-size:20px;font-weight:500;line-height:28px;margin-bottom:10px">有料プランへのアップグレードが必要です</div>
+<div style="font-size:14px;color:#555;line-height:1.7;margin-bottom:22px">絞り込み設定は、有料プランでご利用いただける機能です。</div>
+<div style="display:flex;gap:10px;justify-content:flex-end"><button onClick="{{ closeUpg }}" style="height:42px;padding:0 26px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">閉じる</button><button onClick="{{ closeUpg }}" style="height:42px;padding:0 26px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">有料プラン詳細へ</button></div></div></div></sc-if></div>
+</sc-if>
+<sc-if value="{{ s2 }}">
+<div style="position:absolute;left:100px;top:36px;width:1240px;height:828px;background:#fff;border-radius:8px;display:flex;flex-direction:column;box-shadow:0 10px 40px rgba(0,0,0,.3)">
+<div style="padding:20px 32px 14px;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;gap:12px">
+<button onClick="{{ t2Back }}" style="border:0;background:none;font-size:14px;color:#555;cursor:pointer">{{ t2BackLabel }}</button>
+<div style="flex:1;text-align:center;font-size:24px;font-weight:500;line-height:32px">{{ t2Title }} <sc-if value="{{ notes }}"><span style="{{ bNew }}">新規</span></sc-if></div>
+<button onClick="{{ t2Back }}" style="border:0;background:none;font-size:26px;color:#444;cursor:pointer;line-height:1">✕</button></div>
+<div style="background:#F4FBF2;border-bottom:1px solid #bfe8d0;padding:10px 32px;font-size:14px;color:#23814D">{{ t2Notice }}</div>
+<div style="flex:1;display:flex;overflow:hidden;background:#F8F8F8">
+<div id="t2body" style="flex:1;overflow:auto;padding:22px 32px;display:flex;flex-direction:column;gap:20px">
+<sc-if value="{{ errTotal }}"><div style="background:#FEF5E4;border:1px solid #F44336;color:#F44336;border-radius:6px;padding:10px 14px;font-size:14px;font-weight:400">{{ errBanner }}</div></sc-if>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px">
+<div><div style="display:flex;margin-bottom:8px"><span style="font-weight:600;font-size:14px;flex:1">管理名 <span style="color:#F44336">＊</span></span><span style="font-size:12px;line-height:16px;color:#888888">{{ nameCount }}/20</span></div><input id="err-name" value="{{ newName }}" onInput="{{ setName }}" placeholder="例：新規入会プレゼント" style="{{ nameStyle }}"><sc-if value="{{ errName }}"><div style="color:#F44336;font-size:14px;margin-top:6px">管理名を入力してください</div></sc-if></div>
+<div><div style="font-weight:600;font-size:14px;margin-bottom:8px">フォルダ</div>
+<div onClick="{{ folderTog }}" style="height:44px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 14px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer"><span>{{ newFolder }}</span><span style="color:#777">⌄</span></div>
+<sc-if value="{{ folderOpen }}"><div style="margin-top:4px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ folderItems }}" as="o" hint-placeholder-count="3"><div onClick="{{ o.pick }}" style="{{ o.style }}">{{ o.label }}</div></sc-for></div></sc-if></div></div>
+<div><div style="font-weight:600;font-size:14px;margin-bottom:8px">メッセージタイプを選択 <span style="font-weight:400;font-size:12px;line-height:16px;color:#888888">（保存後の変更はできません）</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">
+<sc-for list="{{ mtypes }}" as="f" hint-placeholder-count="5"><button onClick="{{ f.pick }}" style="{{ f.style }}">{{ f.label }}</button></sc-for></div></div>
+
+<sc-if value="{{ isTextT }}"><div>
+<div style="display:flex;gap:4px;border-bottom:1px solid #E0E0E0;margin-bottom:12px"><sc-for list="{{ t2Tabs }}" as="t" hint-placeholder-count="2"><div onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</div></sc-for></div>
+<sc-if value="{{ t2Text }}"><div style="position:relative">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap"><span style="font-weight:600;font-size:14px;margin-right:4px">テキスト <span style="color:#F44336">＊</span></span>
+<button onClick="{{ tpInsTog }}" style="{{ tbIns }}">＋ 情報自動挿入</button><button onClick="{{ tpPdfTog }}" style="{{ tbPdf }}">＋ PDFアップロード</button><button onClick="{{ tpEmojiTog }}" style="{{ tbEmoji }}">＋ 絵文字</button></div>
+<sc-if value="{{ tpIns }}"><div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:8px;margin-bottom:8px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:2px"><sc-for list="{{ insItems }}" as="o" hint-placeholder-count="9"><div onClick="{{ o.pick }}" style="padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px" style-hover="background:#eef1f3">{{ o.label }}</div></sc-for></div></sc-if>
+<sc-if value="{{ tpEmoji }}"><div onClick="{{ emojiClose }}" style="position:fixed;inset:0;z-index:4"></div><div style="position:absolute;left:0;top:44px;width:360px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18);z-index:5;display:flex;flex-direction:column">
+<div style="display:flex;border-bottom:1px solid #E0E0E0;padding:4px 6px;gap:2px"><sc-for list="{{ emojiCats }}" as="c" hint-placeholder-count="7"><div onClick="{{ c.pick }}" title="{{ c.name }}" style="{{ c.style }}">{{ c.label }}</div></sc-for></div>
+<div style="padding:8px 10px 0"><div style="display:flex;align-items:center;gap:6px;height:34px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 10px;background:#fff"><span style="color:#999">⌕</span><input value="{{ emojiQ }}" onInput="{{ setEmojiQ }}" placeholder="絵文字を検索（例：ケーキ、heart）" style="border:0;outline:0;flex:1;font-size:14px;font-family:inherit"></div></div>
+<div style="padding:8px 12px 4px;font-size:12px;line-height:16px;color:#888888;font-weight:600">{{ emojiHead }}</div>
+<div style="padding:0 8px 8px;height:200px;overflow-y:auto"><div style="display:grid;grid-template-columns:repeat(8,1fr);gap:2px"><sc-for list="{{ emojiItems }}" as="m" hint-placeholder-count="16"><div onClick="{{ m.add }}" title="{{ m.kw }}" style="height:38px;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer;border-radius:6px" style-hover="background:#e3f6ea">{{ m.ch }}</div></sc-for></div>
+<sc-if value="{{ emojiEmpty }}"><div style="padding:30px 0;text-align:center;font-size:14px;color:#888888">該当する絵文字がありません</div></sc-if></div></div></sc-if>
+<sc-if value="{{ tpPdf }}"><div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:14px;margin-bottom:8px">
+<div onClick="{{ pdfBrowse }}" onDragOver="{{ pdfOver }}" onDrop="{{ pdfDrop }}" style="{{ pdfZone }}"><div style="font-size:14px;font-weight:400;color:#222222">PDFファイルをドラッグ＆ドロップ、またはクリックして選択</div><div style="font-size:12px;line-height:16px;color:#888888;margin-top:4px">PDF形式のみ・10MBまで</div></div>
+<input id="pdf-in" type="file" accept="application/pdf,.pdf" onChange="{{ pdfPick }}" style="display:none">
+<sc-if value="{{ pdfErr }}"><div style="color:#F44336;font-size:14px;margin-top:8px">{{ pdfErr }}</div></sc-if>
+<sc-if value="{{ pdfHas }}"><div style="display:flex;align-items:center;gap:10px;margin-top:10px"><span style="font-size:14px;flex:1;word-break:break-all">📄 {{ pdfName }}<span style="color:#888888;font-size:12px;line-height:16px;margin-left:8px">{{ pdfSize }}</span></span>
+<sc-if value="{{ pdfReady }}"><button onClick="{{ pdfUpload }}" style="height:34px;padding:0 16px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">アップロード</button></sc-if>
+<sc-if value="{{ pdfBusy }}"><span style="font-size:14px;color:#888888">アップロード中…</span></sc-if>
+<sc-if value="{{ pdfDone }}"><span style="font-size:14px;color:#23814D;font-weight:600">✓ アップロード完了</span><button onClick="{{ pdfInsert }}" style="height:34px;padding:0 16px;border:1.5px solid #08BF5A;background:#fff;color:#23814D;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">URLをテキストに挿入</button></sc-if></div></sc-if></div></sc-if>
+<textarea id="ta-new" value="{{ newText }}" onInput="{{ setText }}" placeholder="例：ご入会ありがとうございます🎁 次回ご来店時に、ヘッドスパ10分無料チケットをプレゼントします。" style="{{ textStyle }}"></textarea><div style="text-align:right;font-size:12px;line-height:16px;color:#888888;margin-top:4px"><span style="color:#F44336;margin-right:10px">{{ txErr }}</span>{{ textLen }} / 5000</div><sc-if value="{{ errText }}"><div style="color:#F44336;font-size:14px;margin-top:6px">本文を入力してください</div></sc-if></div></sc-if>
+<sc-if value="{{ t2Url }}"><div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:18px">
+<div><div style="font-weight:600;font-size:14px;margin-bottom:10px">アクション稼働設定</div><div style="display:flex;gap:28px;flex-wrap:wrap"><sc-for list="{{ runOpts }}" as="o" hint-placeholder-count="2"><div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><span style="{{ o.dot }}"></span>{{ o.label }}</div></sc-for></div></div>
+<div><div style="font-weight:600;font-size:14px;margin-bottom:10px">URL表示プレビュー</div><div style="display:flex;gap:28px;flex-wrap:wrap"><sc-for list="{{ pvOpts }}" as="o" hint-placeholder-count="2"><div onClick="{{ o.pick }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><span style="{{ o.dot }}"></span>{{ o.label }}</div></sc-for></div></div></div></sc-if>
+</div></sc-if>
+<sc-if value="{{ isOtherT }}"><div style="background:#fff;border:1px dashed #c5c9cd;border-radius:8px;padding:28px;text-align:center;color:#888888;font-size:14px">このメッセージタイプの編集画面は、今回のプロトタイプでは省略しています。</div></sc-if>
+
+<sc-if value="{{ isPanelT }}">
+<div><div style="font-weight:600;font-size:14px;margin-bottom:8px">タイプ選択 <span style="font-weight:400;font-size:12px;line-height:16px;color:#888888">（保存後の変更はできません）</span></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+<sc-for list="{{ ctypes }}" as="c" hint-placeholder-count="4"><div onClick="{{ c.pick }}" style="{{ c.style }}"><div style="{{ c.head }}">{{ c.label }}</div><div style="padding:10px;display:flex;flex-direction:column;gap:5px;align-items:stretch"><div style="height:34px;background:repeating-linear-gradient(45deg,#eef1f3,#eef1f3 6px,#e3e7ea 6px,#e3e7ea 12px);border-radius:3px"></div><div style="height:5px;background:#e3e7ea;border-radius:3px;width:70%"></div><div style="{{ c.btn }}"></div></div></div></sc-for></div></div>
+<div style="display:flex;gap:4px;border-bottom:1px solid #E0E0E0">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="2"><div onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</div></sc-for></div>
+
+<sc-if value="{{ tabPanel }}">
+<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap"><button onClick="{{ addPanel }}" style="{{ addPanelStyle }}">＋ パネル追加</button><span style="font-size:14px;color:#666">※パネルは最大10枚まで登録できます。</span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ panelChips }}" as="p" hint-placeholder-count="1"><div onClick="{{ p.pick }}" style="{{ p.style }}">{{ p.label }}<span style="{{ p.tag }}">編集中</span></div></sc-for></div>
+<div style="display:flex;align-items:center"><div style="font-weight:500;font-size:16px;line-height:24px;flex:1">{{ editTitle }}</div><sc-if value="{{ multiPanel }}"><button onClick="{{ delPanel }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 10px;font-size:14px;cursor:pointer;color:#222222">このパネルを削除</button></sc-if></div>
+<div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:18px 20px;display:flex;flex-direction:column;gap:16px">
+<div><div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px"><b style="font-size:14px">画像登録</b><span style="font-size:12px;line-height:16px;color:#888888">推奨サイズ 1024×678 px</span></div>
+<div style="display:flex;align-items:center;gap:12px"><button onClick="{{ toggleImg }}" style="height:40px;padding:0 22px;border:0;background:#5799DB;color:#fff;border-radius:4px;font-size:14px;cursor:pointer">⇧ {{ imgBtn }}</button><span style="font-size:14px;color:#666">{{ imgState }}</span></div></div>
+<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><b style="font-size:14px">タイトル</b><button onClick="{{ titleName }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 10px;font-size:14px;cursor:pointer;color:#222222">＋LINE名</button><button onClick="{{ titleEmoji }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 10px;font-size:14px;cursor:pointer;color:#222222">☺</button><div style="flex:1"></div><span style="font-size:12px;line-height:16px;color:#888888">{{ titleCount }}/40</span></div>
+<textarea value="{{ pTitle }}" onInput="{{ setTitle }}" placeholder="例：ご入会ありがとうございます" style="width:100%;box-sizing:border-box;height:56px;border:1px solid #E0E0E0;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;resize:none"></textarea></div>
+<div><div style="display:flex;align-items:center;gap:10px;margin-bottom:6px"><b style="font-size:14px">本文 <span style="color:#F44336">＊</span></b><button onClick="{{ bodyName }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 10px;font-size:14px;cursor:pointer;color:#222222">＋LINE名</button><button onClick="{{ bodyEmoji }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:30px;padding:0 10px;font-size:14px;cursor:pointer;color:#222222">☺</button><div style="flex:1"></div><span style="font-size:12px;line-height:16px;color:#888888">{{ bodyCount }}/60</span></div>
+<textarea id="err-pbody" value="{{ pBody }}" onInput="{{ setBody }}" placeholder="例：ヘッドスパ10分無料チケットをプレゼントします。" style="{{ bodyStyle }}"></textarea><div style="font-size:12px;line-height:16px;color:#888888;margin-top:4px;line-height:1.6">表示端末によっては、文字数制限内でも全文表示されない場合があります。</div><sc-if value="{{ errBody }}"><div style="color:#F44336;font-size:14px;margin-top:6px">本文を入力してください</div></sc-if></div></div>
+
+<div style="font-weight:500;font-size:16px;line-height:24px">ボタン編集</div>
+<sc-for list="{{ btns }}" as="b" hint-placeholder-count="1"><div id="{{ b.cardId }}" style="flex:none;background:#fff;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden">
+<div style="display:flex;align-items:center;gap:2px;padding:6px 10px 6px 14px;background:#F8F8F8;border-bottom:1px solid #E0E0E0">
+<div onClick="{{ b.toggle }}" style="flex:1;display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0;height:32px"><span style="font-size:14px;font-weight:600;flex:none">ボタン{{ b.num }}</span><sc-if value="{{ b.isClosed }}"><span style="font-size:14px;color:#666;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ b.summary }}</span></sc-if></div>
+<sc-if value="{{ b.confirming }}"><span style="font-size:14px;color:#222222">このボタンを削除しますか？</span><button onClick="{{ b.cancelDel }}" style="border:1px solid #E0E0E0;background:#fff;border-radius:5px;height:28px;padding:0 10px;font-size:14px;cursor:pointer">キャンセル</button><button onClick="{{ b.doDel }}" style="height:28px;padding:0 10px;border:0;border-radius:5px;background:#333;color:#fff;font-size:14px;cursor:pointer">削除する</button></sc-if>
+<sc-if value="{{ b.normal }}"><button onClick="{{ b.up }}" title="上へ移動" style="width:30px;height:30px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;{{ b.upSt }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"></path></svg></button><button onClick="{{ b.down }}" title="下へ移動" style="width:30px;height:30px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;{{ b.downSt }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg></button><button onClick="{{ b.copy }}" title="複製" style="width:30px;height:30px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;{{ b.copySt }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V5a2 2 0 0 1 2-2h8"></path></svg></button><button onClick="{{ b.askDel }}" title="削除" style="width:30px;height:30px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button><button onClick="{{ b.toggle }}" title="展開・折りたたみ" style="width:30px;height:30px;border:0;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:14px;color:#555">{{ b.chev }}</button></sc-if></div>
+<sc-if value="{{ b.isOpen }}"><div style="padding:14px 16px;display:flex;flex-direction:column;gap:14px">
+<div><div style="display:flex;margin-bottom:6px"><span style="font-size:14px;font-weight:400;flex:1">ボタンテキスト <span style="color:#F44336">＊</span></span><span style="font-size:12px;line-height:16px;color:#888888">{{ b.count }}/20</span></div><input id="{{ b.eid }}" value="{{ b.text }}" onInput="{{ b.setText }}" placeholder="例：予約する" style="{{ b.inStyle }}"><sc-if value="{{ b.bErr }}"><div style="color:#F44336;font-size:14px;margin-top:6px">ボタンテキストを入力してください</div></sc-if></div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">ボタンカラー</div><div style="display:flex;gap:8px"><input type="color" value="{{ b.bgPick }}" onInput="{{ b.setBg }}" style="width:42px;height:40px;padding:2px;border:1px solid #E0E0E0;border-radius:6px;background:#fff;cursor:pointer;flex:none"><input value="{{ b.bg }}" onInput="{{ b.setBg }}" placeholder="#08BF5A" style="flex:1;min-width:0;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"></div></div><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">テキストカラー</div><div style="display:flex;gap:8px"><input type="color" value="{{ b.fgPick }}" onInput="{{ b.setFg }}" style="width:42px;height:40px;padding:2px;border:1px solid #E0E0E0;border-radius:6px;background:#fff;cursor:pointer;flex:none"><input value="{{ b.fg }}" onInput="{{ b.setFg }}" placeholder="#ffffff" style="flex:1;min-width:0;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"></div></div></div>
+<div><div style="font-size:14px;font-weight:400;margin-bottom:6px">アクション</div><div style="display:flex;gap:24px;flex-wrap:wrap"><div onClick="{{ b.pickLme }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><span style="{{ b.dotLme }}"></span>エルメアクション・友だちアクションを設定する</div><div onClick="{{ b.pickUrl }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px"><span style="{{ b.dotUrl }}"></span>LINE URLスキームを設定する</div></div></div>
+<sc-if value="{{ b.isLme }}"><div style="display:flex;flex-direction:column;gap:12px;background:#F8F8F8;border:1px solid #E0E0E0;border-radius:8px;padding:12px 14px">
+<div><div style="font-size:12px;line-height:16px;color:#666;margin-bottom:6px">実行するアクションを選択</div><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ b.actChips }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</button></sc-for></div></div>
+<sc-if value="{{ b.otherOpen }}"><div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:10px"><div style="font-size:12px;line-height:16px;color:#666;margin-bottom:8px">その他のアクション</div><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ b.otherChips }}" as="c" hint-placeholder-count="6"><button onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</button></sc-for></div></div></sc-if>
+<sc-if value="{{ b.hasOps }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">操作</div><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ b.opChips }}" as="c" hint-placeholder-count="2"><button onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</button></sc-for></div></div></sc-if>
+<sc-if value="{{ b.dTpl }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">送信するテンプレート <span style="color:#F44336">＊</span></div><div style="background:#fff;border:1px solid #E0E0E0;border-radius:6px;max-height:140px;overflow:auto"><sc-for list="{{ b.tplRows }}" as="t" hint-placeholder-count="3"><div onClick="{{ t.pick }}" style="{{ t.style }}"><span style="{{ t.dot }}"></span>{{ t.name }}</div></sc-for></div></div></sc-if>
+<sc-if value="{{ b.dArea }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">{{ b.aValLabel }} <span style="color:#F44336">＊</span></div><textarea value="{{ b.aVal }}" onInput="{{ b.setAVal }}" placeholder="{{ b.aPh }}" style="width:100%;box-sizing:border-box;height:80px;border:1px solid #E0E0E0;border-radius:6px;padding:10px 12px;font-size:14px;font-family:inherit;resize:none;line-height:1.6;background:#fff"></textarea></div></sc-if>
+<sc-if value="{{ b.dInput }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">{{ b.aValLabel }} <span style="color:#F44336">＊</span></div><input value="{{ b.aVal }}" onInput="{{ b.setAVal }}" placeholder="{{ b.aPh }}" style="width:100%;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;background:#fff"></div></sc-if>
+<sc-if value="{{ b.dSts }}"><div><div style="font-size:14px;font-weight:400;margin-bottom:6px">対応ステータス <span style="color:#F44336">＊</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><sc-for list="{{ b.stChips }}" as="c" hint-placeholder-count="5"><button onClick="{{ c.pick }}" style="{{ c.style }}">{{ c.label }}</button></sc-for></div></div></sc-if>
+<sc-if value="{{ b.aErr }}"><div style="color:#F44336;font-size:14px">{{ b.aErrMsg }}</div></sc-if>
+</div></sc-if>
+<sc-if value="{{ b.isUrl }}"><div><input value="{{ b.url }}" onInput="{{ b.setUrl }}" placeholder="例：https://line.me/R/ti/p/@example" style="width:100%;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"><div style="font-size:12px;line-height:16px;color:#888888;margin-top:4px">他のアクションとは併用できません。</div></div></sc-if>
+</div></sc-if></div></sc-for>
+<div style="display:flex;align-items:center;gap:12px"><button onClick="{{ addBtn }}" style="{{ addBtnStyle }}">＋ ボタン追加</button><span style="font-size:14px;color:#666">{{ btnNote }}</span></div>
+</sc-if>
+<sc-if value="{{ tabDetail }}"><div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:18px 20px"><b style="font-size:14px">通知用テキスト</b><div style="font-size:12px;line-height:16px;color:#888888;margin:4px 0 8px">トーク一覧やプッシュ通知に表示されます。</div><input value="{{ altText }}" onInput="{{ setAlt }}" placeholder="例：プレゼントのご案内が届きました" style="width:100%;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit"></div></sc-if>
+</sc-if>
+</div>
+
+<div style="width:420px;background:#e9ecef;border-left:1px solid #E0E0E0;display:flex;flex-direction:column;align-items:center;padding-top:18px;gap:10px">
+<div style="font-size:12px;line-height:16px;color:#666">LINEプレビュー（入力内容がリアルタイムに反映）</div>
+<div style="width:290px;height:560px;border:8px solid #222;border-radius:34px;background:#7c9bc6;overflow:hidden;display:flex;flex-direction:column;box-sizing:content-box">
+<div style="background:#fff;padding:12px 14px;font-size:14px;font-weight:600;border-bottom:1px solid #ddd">KESH | Hair Salon</div>
+<div style="padding:14px 12px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;flex:1;min-height:0">
+<div style="display:flex;gap:6px;align-items:flex-start"><div style="width:30px;height:30px;border-radius:50%;background:#d9dcc9;flex:none"></div>
+<div style="display:flex;flex-direction:column;gap:6px;width:210px">
+<div style="background:#fff;border-radius:14px;overflow:hidden;font-size:14px;line-height:1.55">
+<sc-if value="{{ pvImg }}"><div style="height:{{ imgH }};background:repeating-linear-gradient(45deg,#eef1f3,#eef1f3 6px,#e3e7ea 6px,#e3e7ea 12px);display:flex;align-items:center;justify-content:center;font:12px monospace;color:#999">画像</div></sc-if>
+<sc-if value="{{ pvBody }}"><div style="padding:10px 12px"><sc-if value="{{ pvTitle }}"><div style="font-weight:600;margin-bottom:2px;white-space:pre-wrap;word-break:break-all">{{ previewTitle }}</div></sc-if><div style="white-space:pre-wrap;word-break:break-all;color:{{ pvTextColor }}">{{ previewText }}</div></div></sc-if>
+<sc-for list="{{ pvBtns }}" as="x" hint-placeholder-count="0"><div style="{{ x.style }}">{{ x.text }}</div></sc-for></div>
+<sc-if value="{{ pvQr }}"><div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ pvChips }}" as="x" hint-placeholder-count="0"><div style="background:#d7dbe6;border-radius:14px;padding:5px 12px;font-size:12px;line-height:16px">{{ x.text }}</div></sc-for></div></sc-if>
+<sc-if value="{{ multiPanel }}"><div style="text-align:center;font-size:12px;line-height:16px;color:#fff">パネル {{ panelNo }}</div></sc-if>
+</div></div></div></div></div></div>
+<div style="padding:16px 32px;border-top:1px solid #E0E0E0;display:flex;align-items:center;gap:12px;justify-content:flex-end">
+<span style="flex:1;font-size:14px;color:#888888">{{ hint2 }}</span>
+<button onClick="{{ t2Back }}" style="height:46px;padding:0 28px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">キャンセル</button>
+<button onClick="{{ createLink }}" style="{{ createStyle }}">{{ t2Create }}</button></div>
+<sc-if value="{{ pdfOpen }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:22"><div style="width:520px;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.3);padding:22px 28px 20px;position:relative">
+<button onClick="{{ pdfClose }}" style="position:absolute;right:16px;top:14px;border:0;background:none;font-size:24px;color:#444;cursor:pointer;line-height:1">✕</button>
+<div style="text-align:center;font-size:20px;font-weight:500;line-height:28px;margin-bottom:14px">PDFアップロード</div>
+<div style="font-size:14px;color:#555;line-height:1.7;text-align:center;margin-bottom:16px">PDFデータはそのまま送信することはできません。<br>アップロード後、URLに変換されますので、URLを送信してください。</div>
+<sc-if value="{{ pdfNone }}"><div onDragOver="{{ pdfOver }}" onDrop="{{ pdfDrop }}" style="border:1.5px dashed #9ab;border-radius:8px;padding:28px 20px;text-align:center;background:#F8F8F8"><div style="font-size:14px;color:#222222">ここにファイルをドロップ</div><div style="font-size:14px;color:#888888;margin:8px 0">または</div><button onClick="{{ pdfBrowse }}" style="height:38px;padding:0 22px;border:1.5px solid #08BF5A;background:#fff;color:#23814D;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">PCから選択</button></div>
+<div style="font-size:12px;line-height:16px;color:#888888;text-align:center;margin-top:10px">10MBまでのファイルをアップロードできます</div></sc-if>
+<input id="pdf-in" type="file" accept="application/pdf,.pdf" onChange="{{ pdfPick }}" style="display:none">
+<sc-if value="{{ pdfErr }}"><div style="color:#F44336;font-size:14px;margin-top:10px;text-align:center">{{ pdfErr }}</div></sc-if>
+<sc-if value="{{ pdfHas }}"><div style="border:1px solid #E0E0E0;border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px">
+<div style="font-size:14px;word-break:break-all">📄 {{ pdfName }}<span style="color:#888888;font-size:12px;line-height:16px;margin-left:8px">{{ pdfSize }}</span></div>
+<sc-if value="{{ pdfBusy }}"><div style="font-size:14px;color:#888888">アップロード中…</div></sc-if>
+<sc-if value="{{ pdfDone }}"><div style="font-size:14px;color:#23814D;font-weight:600">✓ アップロードが完了しました</div><div style="font-size:14px;color:#555">URLに変換されました。<span style="color:#888888">（デモ用のサンプルURLです。実在する公開URLではありません）</span></div><div style="font-size:14px;background:#F8F8F8;border-radius:6px;padding:8px 10px;word-break:break-all;color:#222222">{{ pdfUrl }}</div>
+<button onClick="{{ pdfInsert }}" style="height:40px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">URLを本文に挿入</button></sc-if></div></sc-if>
+<div style="text-align:center;margin-top:16px"><button onClick="{{ pdfClose }}" style="border:0;background:none;color:#5799DB;font-size:14px;cursor:pointer">‹ 戻る</button></div>
+</div></div></sc-if>
+<sc-if value="{{ imOpen }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:8px;display:flex;align-items:center;justify-content:center;z-index:20"><div style="width:860px;max-height:640px;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.3);display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;padding:16px 24px;border-bottom:1px solid #E0E0E0"><div style="flex:1;font-size:20px;font-weight:500;line-height:28px">【情報自動挿入】</div><button onClick="{{ imClose }}" style="border:0;background:none;font-size:24px;color:#444;cursor:pointer;line-height:1">✕</button></div>
+<div style="display:flex;min-height:380px;overflow:hidden">
+<div style="width:210px;background:#F8F8F8;border-right:1px solid #E0E0E0;padding:10px;display:flex;flex-direction:column;gap:2px;overflow:auto"><sc-for list="{{ imCats }}" as="c" hint-placeholder-count="9"><div onClick="{{ c.pick }}" style="{{ c.style }}"><span style="{{ c.dot }}"></span>{{ c.label }}</div></sc-for></div>
+<div style="flex:1;overflow:auto;padding:20px 24px;display:flex;flex-direction:column;gap:14px">
+
+<sc-if value="{{ imLine }}"><div style="display:flex;align-items:center;gap:8px;font-size:14px"><span style="{{ imLineDot }}"></span>LINE名を挿入<span style="font-size:12px;line-height:16px;color:#888888;margin-left:8px">表示例：神田 史</span></div></sc-if>
+
+<sc-if value="{{ imElapsed }}"><div style="display:flex;flex-direction:column;gap:14px">
+<div style="{{ imASt }}"><div onClick="{{ imAPick }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:400;margin-bottom:10px"><span style="{{ imADot }}"></span>配信日から指定日までの日数を挿入</div>
+<div onClick="{{ imDateTog }}" style="width:220px;box-sizing:border-box;height:40px;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;gap:8px;font-size:14px;background:#fff;cursor:pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg><span style="{{ imDateStyle }}">{{ imDateText }}</span></div>
+<sc-if value="{{ imCalOpen }}"><div style="margin-top:4px;width:280px;box-sizing:border-box;background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:12px">
+<div style="display:flex;align-items:center;margin-bottom:6px"><button onClick="{{ imPrev }}" style="border:0;background:none;cursor:pointer;font-size:16px;width:28px">‹</button><div style="flex:1;text-align:center;font-weight:600;font-size:14px">{{ imCalTitle }}</div><button onClick="{{ imNext }}" style="border:0;background:none;cursor:pointer;font-size:16px;width:28px">›</button></div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px;text-align:center;font-size:12px;line-height:16px;color:#888888;margin-bottom:4px"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:2px"><sc-for list="{{ imCells }}" as="d" hint-placeholder-count="35"><div onClick="{{ d.pick }}" style="{{ d.style }}">{{ d.label }}</div></sc-for></div></div></sc-if>
+<div style="font-size:14px;color:#555;margin-top:8px">{{ imToPv }}</div></div>
+<div style="{{ imBSt }}"><div onClick="{{ imBPick }}" style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:400;margin-bottom:10px"><span style="{{ imBDot }}"></span>配信日から指定日数経過後の日付を挿入</div>
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><span style="font-size:14px">経過日数</span><input type="number" min="0" step="1" disabled="{{ imBOff }}" value="{{ imDays }}" onInput="{{ setImDays }}" style="width:84px;box-sizing:border-box;height:38px;border:1px solid #E0E0E0;border-radius:6px;padding:0 8px 0 12px;font-size:14px;font-family:inherit"><span style="font-size:14px">日後</span></div>
+<div style="font-size:14px;font-weight:400;margin-bottom:6px">日付の表示方法</div><div onClick="{{ imFmtTogB }}" style="height:40px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer;width:320px"><span>{{ imAfterFmtLabel }}</span><span style="color:#777">⌄</span></div><sc-if value="{{ imFmtOpenB }}"><div style="width:320px;box-sizing:border-box;margin-top:4px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ imAfterFmtItems }}" as="o" hint-placeholder-count="8"><div onClick="{{ o.pick }}" style="{{ o.style }}"><span>{{ o.label }}</span><span style="font-size:12px;line-height:16px;color:#888888">{{ o.group }}</span></div></sc-for></div></sc-if>
+<div style="font-size:14px;color:#555;margin-top:8px">{{ imAfterPv }}</div></div></div></sc-if>
+<sc-if value="{{ imDelivery }}"><div style="display:flex;flex-direction:column;gap:10px"><div style="display:flex;align-items:center;gap:8px;font-size:14px;font-weight:400"><span style="{{ imLineDot }}"></span>配信日の日付を挿入</div>
+<div style="font-size:14px;font-weight:400">日付の表示方法</div><div onClick="{{ imFmtTogD }}" style="height:40px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer;width:320px"><span>{{ imDelFmtLabel }}</span><span style="color:#777">⌄</span></div><sc-if value="{{ imFmtOpenD }}"><div style="width:320px;box-sizing:border-box;margin-top:4px;background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:6px;display:flex;flex-direction:column"><sc-for list="{{ imDelFmtItems }}" as="o" hint-placeholder-count="8"><div onClick="{{ o.pick }}" style="{{ o.style }}"><span>{{ o.label }}</span><span style="font-size:12px;line-height:16px;color:#888888">{{ o.group }}</span></div></sc-for></div></sc-if>
+<div style="font-size:14px;color:#555">挿入される表示例（サンプル）：{{ imDelPv }}</div></div></sc-if>
+
+<sc-if value="{{ imFriend }}"><div style="display:flex;gap:0;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden;min-height:260px">
+<div style="width:130px;background:#F8F8F8;border-right:1px solid #E0E0E0;padding:8px;font-size:14px;color:#888888">友だち情報</div>
+<div style="width:150px;border-right:1px solid #E0E0E0;padding:8px;display:flex;flex-direction:column;gap:4px"><sc-for list="{{ imFolders }}" as="c" hint-placeholder-count="3"><div onClick="{{ c.pick }}" style="{{ c.style }}"><span>{{ c.name }}</span><span>›</span></div></sc-for></div>
+<div style="flex:1;padding:8px;display:flex;flex-direction:column"><sc-for list="{{ imItems }}" as="f" hint-placeholder-count="4"><div onClick="{{ f.pick }}" style="display:flex;align-items:center;gap:8px;padding:9px 10px;font-size:14px;cursor:pointer"><span style="{{ f.dot }}"></span>{{ f.name }}</div></sc-for>
+<sc-if value="{{ imItemsEmpty }}"><div style="margin:auto;font-size:14px;color:#888888">登録済みの項目はありません</div></sc-if></div></div></sc-if>
+
+<sc-if value="{{ imOther }}"><div style="display:flex;border:1px solid #E0E0E0;border-radius:8px;overflow:hidden;min-height:260px">
+<div style="flex:1;border-right:1px solid #E0E0E0;padding:10px;display:flex;flex-direction:column"><div style="font-size:14px;color:#888888;margin-bottom:8px">{{ imCol2 }}</div><div style="margin:auto;padding:12px;font-size:14px;color:#888888;text-align:center;line-height:1.7">{{ imEmptyMsg }}</div></div>
+<div style="flex:1;padding:10px;display:flex;flex-direction:column"><div style="font-size:14px;color:#888888;margin-bottom:8px">{{ imCol3 }}</div><div style="margin:auto;font-size:12px;line-height:16px;color:#aaa">左の一覧から選択してください</div></div></div></sc-if>
+</div></div>
+<div style="display:flex;align-items:center;gap:14px;padding:14px 24px;border-top:1px solid #E0E0E0"><button onClick="{{ imClose }}" style="border:0;background:none;color:#5799DB;font-size:14px;cursor:pointer">‹ 戻る</button><span style="font-size:14px;color:#b4690e">{{ imHint }}</span><div style="flex:1"></div><button onClick="{{ imInsert }}" style="{{ imInsStyle }}">＋メッセージに挿入</button></div>
+</div></div></sc-if>
+</div>
+</sc-if>
+<sc-if value="{{ s3 }}">
+<div style="position:absolute;left:100px;top:36px;width:1240px;height:828px;background:#fff;border-radius:8px;display:flex;flex-direction:column;box-shadow:0 10px 40px rgba(0,0,0,.3)">
+<div style="padding:20px 32px 16px;border-bottom:1px solid #E0E0E0;display:flex;align-items:center;gap:14px"><div style="width:40px;height:40px;border-radius:50%;background:#08BF5A;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center">✓</div><div style="flex:1"><div style="font-size:24px;font-weight:500;line-height:32px">テンプレートを紐づけました</div><div style="font-size:14px;color:#666;margin-top:2px">設定内容と動作を確認し、修正するか、この内容で完了するか選択してください。</div></div><sc-if value="{{ notes }}"><span style="{{ bNew }}">新規</span></sc-if></div>
+<div style="flex:1;display:flex;overflow:hidden;background:#F8F8F8">
+<div style="flex:1;overflow:auto;padding:22px 32px;display:flex;flex-direction:column;gap:16px">
+<div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:16px 22px;display:grid;grid-template-columns:100px 1fr;row-gap:12px;font-size:14px;align-items:center">
+<div style="color:#888888">設定先</div><div style="font-weight:600">リッチメニュー「KESH｜メインメニュー」 › エリア1</div>
+<div style="color:#888888">テンプレート名</div><div><b>「{{ cur.name }}」</b><span style="margin-left:10px;color:#5799DB;cursor:pointer" onClick="{{ editTpl }}">テンプレートを編集 ›</span></div>
+<sc-if value="{{ hasOthers }}"><div style="color:#888888">他のアクション</div><div style="display:flex;flex-direction:column;gap:4px"><sc-for list="{{ otherActs }}" as="o" hint-placeholder-count="1"><div style="font-size:14px"><span style="font-size:12px;line-height:16px;font-weight:600;color:#555;background:#eef1f3;border-radius:4px;padding:2px 6px;margin-right:6px">{{ o.label }}</span>{{ o.text }}</div></sc-for></div></sc-if></div>
+<div style="background:#fff;border:1px solid #E0E0E0;border-radius:8px;padding:18px 22px">
+<div onClick="{{ toggleUse }}" style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;cursor:pointer"><div style="font-weight:500;font-size:16px;line-height:24px;white-space:nowrap">このテンプレートの使用箇所</div><div style="font-size:26px;font-weight:600;color:#08BF5A">{{ realCount }}<span style="font-size:14px;color:#555;font-weight:500"> 箇所</span></div><div style="flex:1"></div><span style="font-size:14px;color:#5799DB;white-space:nowrap">{{ useChevText }} {{ useChev }}</span></div>
+<sc-if value="{{ useOpen }}"><div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+<sc-for list="{{ realUses }}" as="u" hint-placeholder-count="1"><div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:6px;border:1px solid #08BF5A;background:#F4FBF2"><span style="{{ u.tag }}">{{ u.kind }}</span><div style="flex:1;min-width:0"><div style="font-weight:400;font-size:14px">{{ u.name }}</div><div style="font-size:12px;line-height:16px;color:#888888">{{ u.where }}</div></div><span style="font-size:12px;line-height:16px;color:#23814D;font-weight:600">今回の設定</span></div></sc-for></div></sc-if></div>
+</div>
+<div style="width:420px;background:#e9ecef;border-left:1px solid #E0E0E0;display:flex;flex-direction:column;align-items:center;padding-top:16px;gap:8px">
+<div style="font-size:12px;line-height:16px;color:#666">LINE上での動作プレビュー ─ ボタンを押してみてください</div><div style="font-size:12px;line-height:16px;color:#888888">※確認用の動作です。実際には配信されません。</div>
+<div style="width:290px;height:560px;border:8px solid #222;border-radius:34px;background:#7c9bc6;overflow:hidden;display:flex;flex-direction:column;box-sizing:content-box">
+<div style="background:#fff;padding:12px 14px;font-size:14px;font-weight:600;border-bottom:1px solid #ddd">KESH | Hair Salon</div>
+<div id="pv3" style="flex:1;min-height:0;padding:14px 12px;display:flex;flex-direction:column;gap:8px;overflow-y:auto">
+<div style="flex:none;background:#fff;border-radius:14px;align-self:flex-start;max-width:210px;padding:10px 12px;font-size:14px;line-height:1.5">リッチメニューのエリア1をタップしてみてください。</div>
+<sc-if value="{{ tapped }}"><sc-for list="{{ pvMsgs }}" as="m" hint-placeholder-count="1">
+<div style="{{ m.rowStyle }}"><sc-if value="{{ m.bot }}"><div style="width:30px;height:30px;border-radius:50%;background:#d9dcc9;flex:none"></div></sc-if><sc-if value="{{ m.isText }}"><div style="{{ m.bubble }}">{{ m.text }}</div></sc-if><sc-if value="{{ m.isPanel }}"><div style="width:210px;background:#fff;border-radius:14px;overflow:hidden;font-size:14px;line-height:1.55"><sc-if value="{{ m.hasImg }}"><div style="height:100px;background:repeating-linear-gradient(45deg,#eef1f3,#eef1f3 6px,#e3e7ea 6px,#e3e7ea 12px)"></div></sc-if><div style="padding:10px 12px"><sc-if value="{{ m.hasTitle }}"><div style="font-weight:600;margin-bottom:2px">{{ m.title }}</div></sc-if><div style="white-space:pre-wrap;word-break:break-all">{{ m.body }}</div></div><sc-for list="{{ m.btns }}" as="x" hint-placeholder-count="0"><div style="{{ x.style }}">{{ x.text }}</div></sc-for></div></sc-if></div></sc-for></sc-if></div>
+<div style="padding:12px;position:relative;z-index:5"><button onClick="{{ tap }}" style="width:100%;height:44px;border:0;border-radius:22px;background:#08BF5A;color:#fff;font-weight:600;font-size:14px;cursor:pointer;pointer-events:auto">エリア1をタップ</button></div></div>
+<sc-if value="{{ dbgOn }}"><div style="width:306px;box-sizing:border-box;background:#222;color:#9f9;font:11px/1.6 monospace;padding:8px 10px;border-radius:6px;white-space:pre-wrap;word-break:break-all">{{ dbgText }}</div></sc-if>
+</div></div>
+<div style="padding:16px 32px;border-top:1px solid #E0E0E0;display:flex;gap:12px;justify-content:flex-end;align-items:center">
+<div style="flex:1;font-size:12px;line-height:16px;color:#777;line-height:1.6">「設定を修正する」：設定を保存せずに、続けて編集します。<br>「この内容で完了」：設定を保存して、リッチメニュー編集に戻ります。</div>
+<button onClick="{{ goAct }}" style="height:46px;padding:0 28px;border:1px solid #5799DB;background:#fff;color:#5799DB;border-radius:6px;font-size:14px;cursor:pointer">設定を修正する</button>
+<button onClick="{{ finish }}" style="height:46px;padding:0 48px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">この内容で完了</button></div>
+<sc-if value="{{ dlg }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);border-radius:8px;display:flex;align-items:center;justify-content:center"><div style="width:620px;background:#fff;border-radius:10px;padding:26px 30px;box-shadow:0 10px 40px rgba(0,0,0,.3)">
+<div style="font-size:20px;font-weight:500;line-height:28px;margin-bottom:6px">このテンプレートは {{ cur.total }}箇所で使用中です <sc-if value="{{ notes }}"><span style="{{ bNew }}">新規</span></sc-if></div>
+<div style="font-size:14px;color:#555;margin-bottom:12px;line-height:1.6">「{{ cur.name }}」を編集すると、<b>以下すべての使用箇所に変更が反映されます。</b></div>
+<div style="border:1px solid #E0E0E0;border-radius:8px;max-height:170px;overflow:auto;margin-bottom:16px"><sc-for list="{{ uses }}" as="u" hint-placeholder-count="3"><div style="display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:1px solid #E0E0E0;font-size:14px"><span style="{{ u.tag }}">{{ u.kind }}</span><span style="flex:1">{{ u.name }} › {{ u.where }}</span><sc-if value="{{ u.isNow }}"><span style="font-size:12px;line-height:16px;color:#23814D;font-weight:600">今回の設定</span></sc-if><sc-if value="{{ u.other }}"><span style="font-size:12px;line-height:16px;font-weight:600;color:#8a6d1a;background:#FEF5E4;border-radius:10px;padding:2px 8px">デモ</span></sc-if></div></sc-for></div>
+<div style="display:flex;gap:10px;justify-content:flex-end;align-items:center">
+<button onClick="{{ closeDlg }}" style="height:44px;padding:0 22px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">キャンセル</button>
+<button onClick="{{ editCopyB }}" style="height:44px;padding:0 20px;border:1px solid #08BF5A;background:#fff;color:#23814D;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">コピーを作成して編集</button>
+<button onClick="{{ editShared }}" style="height:44px;padding:0 26px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">編集を続ける</button></div>
+<div style="font-size:12px;line-height:16px;color:#888888;margin-top:10px;text-align:right">「コピーを作成して編集」では、他の使用箇所に影響しません。</div></div></div></sc-if>
+</div>
+</sc-if>
+
+<sc-if value="{{ chgOpen }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:40"><div style="width:520px;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.3);padding:26px 30px">
+<div style="font-size:20px;font-weight:500;line-height:28px;margin-bottom:12px">設定済みのテンプレートを変更しますか？</div>
+<div style="font-size:14px;color:#222222;line-height:1.8;margin-bottom:8px">エリア1には現在『{{ chgPrev }}』が設定されています。<br>新しいテンプレート『{{ chgNext }}』に変更すると、エリア1で送信されるテンプレートが切り替わります。</div>
+<div style="font-size:12px;line-height:16px;color:#777;margin-bottom:20px">※変更前のテンプレート自体は削除されず、テンプレート一覧に残ります。</div>
+<div style="display:flex;gap:10px;justify-content:flex-end"><button onClick="{{ chgCancel }}" style="height:44px;padding:0 24px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">キャンセル</button><button onClick="{{ chgProceed }}" style="height:44px;padding:0 26px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">変更して保存</button></div></div></div></sc-if>
+<sc-if value="{{ pvPop }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:30"><div style="width:560px;max-height:780px;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.3);display:flex;flex-direction:column">
+<div style="display:flex;align-items:center;padding:18px 24px 6px"><div style="flex:1;font-size:20px;font-weight:500;line-height:28px">LINEテスト送信</div><button onClick="{{ pvPopClose }}" style="border:0;background:none;font-size:24px;color:#444;cursor:pointer;line-height:1">✕</button></div>
+<div style="padding:0 24px 12px;font-size:14px;color:#666;line-height:1.6">保存したテンプレートをテストユーザーへ送信する前に、内容と送信先を確認してください。</div>
+<div style="flex:1;min-height:0;overflow:auto;padding:0 24px 16px;display:flex;flex-direction:column;gap:16px">
+<div><div style="font-size:14px;font-weight:600;margin-bottom:8px">送信内容 <span style="font-weight:400;color:#666;margin-left:8px">{{ tsTplName }}</span></div><div style="background:#7c9bc6;border-radius:10px;padding:14px 12px;display:flex;flex-direction:column;gap:8px;max-height:260px;overflow:auto"><sc-for list="{{ tsMsgs }}" as="m" hint-placeholder-count="1"><div style="{{ m.rowStyle }}"><sc-if value="{{ m.bot }}"><div style="width:30px;height:30px;border-radius:50%;background:#d9dcc9;flex:none"></div></sc-if><sc-if value="{{ m.isText }}"><div style="{{ m.bubble }}">{{ m.text }}</div></sc-if><sc-if value="{{ m.isPanel }}"><div style="width:230px;background:#fff;border-radius:14px;overflow:hidden;font-size:14px;line-height:1.55"><sc-if value="{{ m.hasImg }}"><div style="height:100px;background:repeating-linear-gradient(45deg,#eef1f3,#eef1f3 6px,#e3e7ea 6px,#e3e7ea 12px);display:flex;align-items:center;justify-content:center;font:12px monospace;color:#999">画像</div></sc-if><div style="padding:10px 12px"><sc-if value="{{ m.hasTitle }}"><div style="font-weight:600;margin-bottom:2px">{{ m.title }}</div></sc-if><div style="white-space:pre-wrap;word-break:break-all">{{ m.body }}</div></div><sc-for list="{{ m.btns }}" as="x" hint-placeholder-count="0"><div style="{{ x.style }}">{{ x.text }}</div></sc-for></div></sc-if></div></sc-for></div></div>
+<div><div style="font-size:14px;font-weight:600;margin-bottom:8px">送信先のテストユーザー <span style="color:#F44336">＊</span></div>
+<div style="display:flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;border:1px solid #E0E0E0;border-radius:6px;padding:0 10px;margin-bottom:8px"><span style="color:#999">⌕</span><input value="{{ tsQ }}" onInput="{{ setTsQ }}" placeholder="名前で検索" style="border:0;outline:0;flex:1;font-size:14px;font-family:inherit"></div>
+<div style="border:1px solid #E0E0E0;border-radius:6px;max-height:150px;overflow:auto"><sc-for list="{{ tsUsers }}" as="u" hint-placeholder-count="3"><div onClick="{{ u.pick }}" style="{{ u.style }}"><span style="{{ u.dot }}"></span><span style="flex:1">{{ u.name }}</span></div></sc-for><sc-if value="{{ tsNoUser }}"><div style="padding:18px;text-align:center;font-size:14px;color:#888888">該当するテストユーザーがいません</div></sc-if></div>
+<div style="font-size:14px;margin-top:8px;color:#222222">{{ tsSel }}</div></div>
+<sc-if value="{{ tsNote }}"><div style="background:#FEF5E4;border:1px solid #FEA600;color:#8a5a10;border-radius:6px;padding:10px 14px;font-size:14px;line-height:1.6">テスト送信は未接続です。このプロトタイプでは、実際のLINEには送信されません。</div></sc-if></div>
+<div style="display:flex;gap:10px;justify-content:flex-end;align-items:center;padding:14px 24px;border-top:1px solid #E0E0E0"><span style="flex:1;font-size:12px;line-height:16px;color:#b4690e">{{ tsHint }}</span><button onClick="{{ pvPopClose }}" style="height:42px;padding:0 24px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">キャンセル</button><button onClick="{{ tsSend }}" style="{{ tsSendStyle }}">テスト送信</button></div></div></div></sc-if>
+<sc-if value="{{ noticeOpen }}"><div style="position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:30"><div style="width:460px;background:#fff;border-radius:10px;box-shadow:0 10px 40px rgba(0,0,0,.3);padding:26px 30px"><div style="font-size:20px;font-weight:500;line-height:28px;margin-bottom:8px">アクション設定を保存しました</div><div style="font-size:14px;color:#222222;margin-bottom:4px">{{ noticeText }}</div><div style="font-size:14px;color:#666;margin-bottom:20px">設定した動作を確認しますか？</div><div style="display:flex;gap:10px;justify-content:flex-end"><button onClick="{{ noticeLater }}" style="height:42px;padding:0 22px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;font-size:14px;cursor:pointer">あとで確認</button><button onClick="{{ noticeCheck }}" style="height:42px;padding:0 24px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;font-size:14px;cursor:pointer">動作を確認する</button></div></div></div></sc-if>
+<sc-if value="{{ done }}"><div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#fff;border-radius:10px;padding:30px 44px;text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.3)"><div style="font-size:20px;font-weight:500;line-height:28px;margin-bottom:6px">設定を保存しました</div><div style="color:#666;font-size:14px;margin-bottom:16px">リッチメニュー編集画面に戻ります</div><div style="display:flex;gap:10px;justify-content:center"><button onClick="{{ backToMenu }}" style="height:42px;padding:0 22px;border:1px solid #c5c9cd;background:#fff;border-radius:6px;cursor:pointer;font-size:14px">リッチメニュー編集に戻る</button><button onClick="{{ restart }}" style="height:42px;padding:0 24px;border:0;background:#08BF5A;color:#fff;font-weight:600;border-radius:6px;cursor:pointer;font-size:14px">設定内容を確認する</button></div></div></sc-if>
+</div>
+
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  blankForm() { return { newName: '', newText: '', mtype: 'text', ctype: 'std', tab: 'panel', t2tab: 'text', altText: '', ap: 0, panels: [{ title: '', body: '', img: false, btns: [{ id: 'b1', text: '', bg: '#08BF5A', fg: '#ffffff', kind: 'lme', url: '', act: null, open: true }] }], newFolder: '未分類', runMode: 'once', urlPv: 'show', t2tried: false, editId: null, editCopy: false, pdf: null, pdfOpen: false, imOpen: false, tp: null, txErr: '' }; }
+  initActions() { return [{ id: 'a1', type: 'tpl', tplId: null, val: '', open: true }]; }
+  state = { saved: null, tagFolders: { '未分類': ['来店予約済み', '新規', 'VIP'], 'キャンペーン': [] }, tagModal: null, upg: false, actions: [{ id: 'a1', type: 'tpl', tplId: null, val: '', open: true }],
+    activeId: 'a1', menuOpen: false, delId: null, tried: false, createFor: null, folderOpen: false, emojiCat: 0, nid: 3, cat: 'すべて', screen: 1, selId: null, q: '', ...this.blankForm(), tapped: false, dlg: false, notes: false, done: false,
+    tpls: [
+      { id: 't1', name: 'KESH｜スタイリスト紹介', body: 'KESHのスタイリストをご紹介します。', usage: 2, uses: [{ kind: 'リッチメニュー', name: 'KESH メインメニュー', where: 'エリア2' }, { kind: 'ステップ配信', name: '新規友だち 3日間', where: 'Day2 メッセージ' }] },
+      { id: 't2', name: 'KESH｜施術メニュー紹介', body: '施術メニューの一覧はこちらです。', usage: 1, uses: [{ kind: 'リッチメニュー', name: 'KESH メインメニュー', where: 'エリア3' }] },
+      { id: 't3', name: 'プレゼント', body: 'ご来店ありがとうございます🎁\nカラー10%OFFクーポンをお贈りします。', usage: 2, uses: [{ kind: 'リッチメニュー', name: 'KESH｜サブメニュー', where: 'エリア1' }, { kind: 'ステップ配信', name: '誕生日クーポン', where: 'Day0 メッセージ' }] }
+    ] };
+  async playDemo() {
+    const run = this._run = (this._run || 0) + 1, wait = ms => new Promise(r => setTimeout(r, ms)), st = o => new Promise(r => this.setState(o, r));
+    const live = () => this._run === run, TXT = 'KESH | Hair Salon 髪から、自分らしく。KESHのコンセプトは、「自分らしさを大切に…」';
+    await st({ screen: 1, done: false, dlg: false, tried: false, menuOpen: false, delId: null, activeId: 'a2', selId: null, q: '', cat: 'すべて', nid: 3,
+      actions: [{ id: 'a1', type: 'tpl', tplId: 't3', val: '', open: false }, { id: 'a2', type: 'text', tplId: null, val: TXT, open: false }] });
+    await wait(1200); if (!live()) return;
+    await st({ delId: 'a2' }); await wait(1100); if (!live()) return;
+    await st(s => ({ actions: s.actions.filter(a => a.id !== 'a2'), delId: null, activeId: 'a1' })); await wait(900); if (!live()) return;
+    await st({ menuOpen: true }); await wait(1100); if (!live()) return;
+    this._sc = 'n3';
+    await st(s => ({ actions: [...s.actions, { id: 'n3', type: 'text', tplId: null, val: '', open: true }], nid: 4, menuOpen: false, activeId: 'n3' })); await wait(900);
+    for (let i = 1; i <= TXT.length; i++) { if (!live()) return; await st(s => ({ actions: s.actions.map(a => a.id === 'n3' ? { ...a, val: TXT.slice(0, i) } : a) })); await wait(70); }
+    await wait(1000); if (!live()) return;
+    await st({ screen: 3, tapped: false, selId: 't3' });
+  }
+  componentDidMount() { this._pp = () => this.placePop(); window.addEventListener('scroll', this._pp, true); window.addEventListener('resize', this._pp); }
+  componentWillUnmount() { window.removeEventListener('scroll', this._pp, true); window.removeEventListener('resize', this._pp); }
+  placePop() {
+    if (!this._pp) { this._pp = () => this.placePop(); window.addEventListener('scroll', this._pp, true); window.addEventListener('resize', this._pp); }
+    const p = this.state.pop, pe = document.querySelector('[data-popup]'); if (!p || !pe) return;
+    const an = document.querySelector('[data-anc="' + p.id + '-' + p.kind + '"]'); if (!an) return;
+    const r = an.getBoundingClientRect(), cb = document.getElementById('a1body'), c = cb ? cb.getBoundingClientRect() : { top: 0, bottom: innerHeight };
+    const w = pe.offsetWidth, h = pe.offsetHeight, vw = document.documentElement.clientWidth, vh = window.innerHeight;
+    const lo = Math.max(8, c.top), hi = Math.min(vh - 8, c.bottom);
+    let top = r.bottom + 4;
+    if (top + h > hi) { const up = r.top - h - 4; if (up >= lo || (r.top - lo) > (hi - r.bottom)) top = Math.max(lo, up); else top = Math.max(lo, hi - h); }
+    let left = Math.max(8, Math.min(r.left, vw - 8 - w));
+    pe.style.top = top + 'px'; pe.style.left = left + 'px';
+    pe.style.visibility = (r.bottom < c.top || r.top > c.bottom) ? 'hidden' : 'visible';
+  }
+  componentDidUpdate() {
+    this.placePop();
+    if (this._sc2) { const id = this._sc2; this._sc2 = null; setTimeout(() => { const el = document.getElementById(id), c = document.getElementById('t2body'); if (el && c) { c.scrollTop += el.getBoundingClientRect().top - c.getBoundingClientRect().top - 90; if (el.focus) el.focus({ preventScroll: true }); } }, 60); }
+    const pp = this.state.pop, lk = pp ? pp.id + pp.kind : '';
+    if (lk !== this._lk) { this._lk = lk;
+      if (pp && ['sst', 'stop', 'stst'].includes(pp.kind)) setTimeout(() => { const an = document.querySelector('[data-anc="' + pp.id + '-' + pp.kind + '"]'), cb = document.getElementById('a1body'); if (!an || !cb) return;
+        const d = an.parentElement.getBoundingClientRect().bottom - cb.getBoundingClientRect().bottom + 16; if (d > 0) cb.scrollTop += d; }, 40); }
+    if (this._sc) { const id = this._sc; this._sc = null; setTimeout(() => { const el = document.getElementById('act-' + id), c = document.getElementById('a1body'); if (el && c) c.scrollTop += el.getBoundingClientRect().top - c.getBoundingClientRect().top - 12; }, 40); }
+  }
+  renderVals() {
+    const s = this.state, set = (o) => this.setState(o), sc = s.screen;
+    const g = '#08BF5A';
+    const TY = { tpl: { t: 'テンプレートを送信' }, text: { t: 'テキストを送信', ph: '送信するテキストを入力', lab: '送信するテキスト' }, tag: { t: 'タグを付ける・外す', ph: '例：来店予約済み', lab: 'タグ名' }, step: { t: 'ステップ配信を開始・停止', ph: '例：新規友だち3日間', lab: '対象のステップ配信' }, other: { t: 'その他のアクション', ph: '設定内容を入力', lab: '設定内容' } };
+    Object.assign(TY, { remind: { t: 'リマインド' }, bookmark: { t: 'ブックマーク' }, friend: { t: '友だち情報' }, status: { t: '対応ステータス' }, block: { t: 'ブロック・非表示' }, step: { t: 'ステップ' }, tag: { t: 'タグを付ける・外す' } });
+    const SPEC = {
+      step: { ops: ['停止', '開始／再開', '途中から配信'] },
+      tag: { ops: ['つける', 'はずす'], tL: '対象のタグ', ts: ['x'], tPh: 'タグを選択' },
+      bookmark: { ops: ['ブックマークする', 'ブックマークを外す'] },
+      friend: { ops: ['登録されている情報を削除', '以下の情報を登録'] },
+      status: { ops: ['ステータスをつける', 'ステータスを外す'] },
+      block: { ops: ['ブロックする', 'ブロック解除', '表示', '非表示'] } };
+    const END_REQ_ON_STOP = false; // 停止時に配信終了日時が必須かは未確認。必須なら true
+    const endOk = a => !!a.date && a.th != null;
+    const FDEL = '登録されている情報を削除';
+    const MID = '途中から配信', dayOk = a => /^\d+$/.test(String(a.day == null ? '0' : a.day));
+    const valid = a => { if (a.type === 'step') return !!a.target && ((a.op || '停止') !== MID || dayOk(a)); if (a.type === 'status') return !!a.target; if (a.type === 'friend') return !!a.target && ((a.op || FDEL) === FDEL || !!(a.val || '').trim()); if (a.type === 'tpl') return !!a.tplId; if (a.type === 'text') return !!(a.val || '').trim(); if (a.type === 'remind') return !!a.rid && (endOk(a) || (a.op === 'stop' && !END_REQ_ON_STOP)); const sp = SPEC[a.type]; return (!sp.ts || !!a.target) && (!sp.vL || !!(a.val || '').trim()); };
+    const errOf = a => { if (a.type === 'step') return !a.target ? '対象のステップ配信を選択してください' : '開始日数を0以上の整数で入力してください'; if (a.type === 'status') return 'ステータスを選択してください'; if (a.type === 'friend') return !a.target ? '友だち情報を選択してください' : '登録する値を入力してください'; if (a.type === 'tpl') return '送信するテンプレートを選択してください'; if (a.type === 'text') return '送信するテキストを入力してください'; if (a.type === 'remind') return !a.rid ? 'リマインドを選択してください' : '配信終了日時を入力してください'; const sp = SPEC[a.type]; return sp.vL && a.target ? sp.vL + 'を入力してください' : sp.tL + 'を選択してください'; };
+    const sumOf = (a, tpl) => { if (a.type === 'tpl') return tpl ? '送信するテンプレート：' + tpl.name : 'テンプレートが未選択です'; if (a.type === 'text') return a.val.trim() || 'テキストが未入力です';
+      if (a.type === 'remind') { if (!a.rid) return 'リマインドが未選択です'; const st = a.op === 'stop'; return (st ? 'リマインド配信を停止' : 'リマインド配信を開始') + '｜' + a.rid + (endOk(a) ? '｜' + a.date + ' ' + a.th + ':' + a.tm + ' に配信終了' : (st ? '' : '｜配信終了日時が未入力')); }
+      if (a.type === 'step') { const o = a.op || '停止'; return a.target ? 'ステップ｜' + a.target.replace(/^KESH｜/, '') + '｜' + (o === MID ? Number(a.day || 0) + '日目から配信' : o) : 'ステップが未選択です'; }
+      if (a.type === 'status') return a.target ? '対応ステータス｜' + a.target + ((a.op || 'ステータスをつける') === 'ステータスをつける' ? 'をつける' : 'を外す') : 'ステータスが未選択です';
+      if (a.type === 'friend') return a.target ? '友だち情報｜' + a.target + '｜' + ((a.op || FDEL) === FDEL ? '登録情報を削除' : '情報を登録') : '友だち情報が未選択です';
+      if (a.type === 'tag') return a.target ? (a.op || 'つける') + '｜' + a.target : 'タグが未選択です';
+      const sp = SPEC[a.type]; return (a.op || (sp.ops ? sp.ops[0] : '')) + (a.target ? '：' + a.target : '') + (a.val ? '（' + a.val + '）' : '') + (sp.ts && !a.target ? '　対象が未選択です' : ''); };
+    const pad = n => String(n).padStart(2, '0');
+    const genF = a => { const sp = SPEC[a.type]; if (!sp || a.type === 'tag' || a.type === 'bookmark' || a.type === 'friend' || a.type === 'status' || a.type === 'block' || a.type === 'step') return { isGen: false }; return { isGen: true, hasOps: !!sp.ops, opVal: a.op || (sp.ops ? sp.ops[0] : ''), opOpts: (sp.ops || []).map(v => ({ v, l: v })), setOp: e => upd(a.id, { op: e.target.value }),
+      hasT: !!sp.ts, tLabel: sp.tL, tVal: a.target || '', tOpts: [{ v: '', l: sp.tPh || '選択' }, ...(sp.ts || []).map(v => ({ v, l: v }))], setT: e => upd(a.id, { target: e.target.value }), hasV: !!sp.vL, vLabel: sp.vL, isTemp: !!sp.temp }; };
+    const REM = { '未分類': ['来店3日前リマインド', '予約前日リマインド'], 'キャンペーン': [] };
+    const remF = a => {
+      const on = k => !!s.pop && s.pop.id === a.id && s.pop.kind === k, cal = s.cal || { y: 2026, m: 10 }, rc = s.rcat || '未分類', tog = k => () => set({ pop: on(k) ? null : { id: a.id, kind: k } });
+      const first = new Date(cal.y, cal.m, 1).getDay(), days = new Date(cal.y, cal.m + 1, 0).getDate(), cells = [];
+      for (let i = 0; i < first; i++) cells.push({ label: '', pick: () => {}, style: 'height:32px' });
+      for (let d = 1; d <= days; d++) { const ds = cal.y + '/' + pad(cal.m + 1) + '/' + pad(d), sel = a.date === ds; cells.push({ label: d, pick: () => upd(a.id, { date: ds, dtTouched: true }, { pop: null }), style: 'height:32px;display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:14px;cursor:pointer;' + (sel ? 'background:#08BF5A;color:#fff;font-weight:600' : 'color:#222222') }); }
+      const it = (label, sel, pick) => ({ label, pick, style: 'padding:6px;text-align:center;font-size:14px;cursor:pointer;border-radius:4px;' + (sel ? 'background:#08BF5A;color:#fff' : 'color:#222222') });
+      const need = a.type === 'remind' && a.op !== 'stop' && !endOk(a) && (s.tried || a.dtTouched), dE = need && !a.date, tE = need && a.th == null;
+      const bx = (w, e) => `width:${w}px;box-sizing:border-box;height:40px;border:1px solid ${e ? '#F44336' : '#E0E0E0'};border-radius:6px;padding:0 12px;display:flex;align-items:center;gap:8px;font-size:14px;background:${e ? '#fffafa' : '#fff'};cursor:pointer`;
+      return { dtErr: dE || tE, dateBox: bx(200, dE), timeBox: bx(150, tE), isStop: a.type === 'remind' && a.op === 'stop', isRemind: a.type === 'remind', rOpVal: a.op || 'start', setROp: e => upd(a.id, { op: e.target.value }),
+        rName: a.rid || 'リマインドを選択', rNameStyle: a.rid ? 'color:#222' : 'color:#888', rTog: () => set({ rcat: '未分類', pop: on('r') ? null : { id: a.id, kind: 'r' } }), popR: on('r'),
+        rcats: Object.keys(REM).map(name => ({ name, pick: () => set({ rcat: name }), style: 'display:flex;justify-content:space-between;padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px;' + (rc === name ? 'background:#08BF5A;color:#fff;font-weight:600' : 'color:#222222') })),
+        ritems: REM[rc].map(name => ({ name, pick: () => upd(a.id, { rid: name }, { pop: null }) })), rEmpty: REM[rc].length === 0,
+        dateTog: tog('d'), popD: on('d'), dateText: a.date || '日付を選択', dateStyle: a.date ? 'color:#222' : 'color:#888', calTitle: cal.y + '年' + (cal.m + 1) + '月', cells,
+        calPrev: () => set({ cal: cal.m === 0 ? { y: cal.y - 1, m: 11 } : { y: cal.y, m: cal.m - 1 } }), calNext: () => set({ cal: cal.m === 11 ? { y: cal.y + 1, m: 0 } : { y: cal.y, m: cal.m + 1 } }),
+        timeTog: tog('t'), popT: on('t'), timeText: a.th != null ? a.th + ':' + a.tm : '時刻を選択', timeStyle: a.th != null ? 'color:#222' : 'color:#888',
+        hours: Array.from({ length: 24 }, (_, h) => it(pad(h), a.th === pad(h), () => upd(a.id, { th: pad(h), tm: a.tm || '00', dtTouched: true }))),
+        mins: Array.from({ length: 12 }, (_, m) => it(pad(m * 5), a.th != null && a.tm === pad(m * 5), () => upd(a.id, { tm: pad(m * 5), th: a.th != null ? a.th : '00', dtTouched: true }, { pop: null }))) }; };
+    const pill = (on) => `padding:8px 16px;border-radius:20px;font-size:14px;font-weight:600;cursor:pointer;border:1.5px solid ${on ? g : '#c5c9cd'};background:${on ? g : '#fff'};color:${on ? '#fff' : '#444'}`;
+    const labels = ['① アクション設定', '② テンプレート新規作成', '③ 設定確認・使用箇所'];
+    const steps = labels.map((l, i) => ({ label: l, style: pill(sc === i + 1 && !s.done), go: () => set({ screen: i + 1, done: false, dlg: false, closed1: false }) }));
+    const nav = ['1:1チャット', 'テンプレート', 'メッセージ配信', 'ステップ配信', 'あいさつメッセージ', 'リッチメニュー', 'フォーム作成', '自動応答', 'QRコードアクション', 'データ管理'].map(t => ({ t, style: `display:flex;gap:12px;align-items:center;padding:12px 24px;font-size:14px;${t === 'ステップ配信' ? 'color:#08BF5A;font-weight:600' : ''}` }));
+    const bs = (c) => `display:inline-block;font-size:12px;line-height:16px;font-weight:600;color:#fff;background:${c};border-radius:4px;padding:2px 8px;vertical-align:middle;margin-left:8px`;
+    const bNew = bs('#e8590c');
+    const cs = (c, b) => `font-size:12px;line-height:16px;font-weight:500;color:${c};background:${b};border-radius:10px;padding:2px 10px`;
+    const chipOk = cs('#23814D', '#F4FBF2'), chipNo = cs('#666', '#eef1f3');
+    const upd = (id, o, x) => set({ actions: s.actions.map(a => a.id === id ? { ...a, ...o } : a), ...(x || {}) });
+    const FI = { '基本情報': [['システム表示名', '[FRIEND_INFO_system_name]'], ['携帯電話', '[FRIEND_INFO_phone]'], ['メールアドレス', '[FRIEND_INFO_email]'], ['生年月日', '[FRIEND_INFO_birthday]']],
+      '国内住所': [['郵便番号', '[FRIEND_INFO_zip_code]'], ['都道府県名', '[FRIEND_INFO_province]'], ['市区町村名', '[FRIEND_INFO_district]'], ['町名/番地', '[FRIEND_INFO_township]'], ['建物名・部屋番号', '[FRIEND_INFO_building]']], '未分類': [] };
+    const SAMPLE = { system_name: '神田 史', phone: '090-1234-5678', email: 'kanda@example.com', birthday: '1990年4月1日', zip_code: '150-0001', province: '東京都', district: '渋谷区', township: '神宮前1-2-3', building: 'KESHビル 3F' };
+    const DUMMY = [['{name}', '神田 史'], ...Object.keys(SAMPLE).map(k => ['[FRIEND_INFO_' + k + ']', SAMPLE[k]])];
+    const pvOf = v => DUMMY.reduce((t, [k, r]) => t.split(k).join(r), v);
+    const ins = (a, t) => {
+      const el = document.getElementById('ta-' + a.id), v = a.val; let st = v.length, en = v.length;
+      if (el && el.selectionStart != null) { st = el.selectionStart; en = el.selectionEnd; }
+      upd(a.id, { val: (v.slice(0, st) + t + v.slice(en)).slice(0, 5000) }, { pop: null });
+      setTimeout(() => { const e2 = document.getElementById('ta-' + a.id); if (e2) { e2.focus(); const p = Math.min(st + t.length, 5000); e2.setSelectionRange(p, p); } }, 30);
+    };
+    const q = s.q.trim();
+    const list = s.tpls.filter(t => (!q || t.name.includes(q)) && (s.cat === 'すべて' || (t.folder || '未分類') === s.cat));
+    const FRI = { '未分類': [], '基本情報': ['システム表示名', '携帯電話', 'メールアドレス', '生年月日'], '国内住所': ['郵便番号', '都道府県名', '市区町村名', '町名／番地', '建物名・部屋番号'] };
+    const STS = ['見込みあり', '対応中', 'フォロー', 'トラブル', '対応完了'], STOPS = ['ステータスをつける', 'ステータスを外す'];
+    const STPS = [['KESH｜友だち追加後のご案内', false], ['新規友だち3日間', true], ['誕生日クーポン', true], ['再来店フォロー', true]], STPOPS = ['停止', '開始／再開', MID];
+    const stpF = a => {
+      if (a.type !== 'step') return { isStp: false };
+      const op = a.op || '停止', mid = op === MID, onP = k => !!s.pop && s.pop.id === a.id && s.pop.kind === k, tg = k => () => set({ pop: onP(k) ? null : { id: a.id, kind: k } });
+      const day = a.day == null ? '0' : String(a.day), dErr = mid && !dayOk(a);
+      return { isStp: true, stpOp: op, stpOpOpen: onP('stop'), stpOpTog: tg('stop'),
+        stpOpItems: STPOPS.map(l => ({ label: l, pick: () => upd(a.id, { op: l }, { pop: null }), style: 'padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (op === l ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })),
+        stpTgOpen: onP('stst'), stpTgTog: tg('stst'), stpTgLabel: a.target || 'ステップを選択', stpTgText: a.target ? 'color:#222' : 'color:#888',
+        stpTgStyle: 'width:360px;box-sizing:border-box;height:40px;border:1px solid ' + (s.tried && !a.target ? '#F44336' : '#E0E0E0') + ';border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer',
+        stpFolders: [{ name: '未分類', style: 'display:flex;justify-content:space-between;padding:9px 10px;font-size:14px;border-radius:4px;background:#08BF5A;color:#fff;font-weight:600' }],
+        stpItems: STPS.map(([name, sample]) => ({ name, sample, pick: () => upd(a.id, { target: name }, { pop: null }), style: 'display:flex;align-items:center;gap:8px;padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px;' + (a.target === name ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })), stpTgErr: !!s.tried && !a.target,
+        stpMid: mid, stpDay: day, stpDayErr: dErr, stpDayBorder: dErr ? '#F44336' : '#E0E0E0',
+        setStpDay: e => { let v = String(e.target.value); if (/^-/.test(v)) v = '0'; upd(a.id, { day: v.replace(/[^0-9]/g, '') }); },
+        stpSummary: a.target ? a.target + (mid ? 'を' + Number(day || 0) + '日目から配信' : 'を' + op) : '対象のステップ配信を選択してください' };
+    };
+    const stF = a => {
+      if (a.type !== 'status') return { isSt: false };
+      const op = a.op || STOPS[0], onP = k => !!s.pop && s.pop.id === a.id && s.pop.kind === k, tg = k => () => set({ pop: onP(k) ? null : { id: a.id, kind: k } });
+      const it = (sel, label, pick) => ({ label, pick, style: 'padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (sel ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') });
+      return { isSt: true, popSop: onP('sop'), stOpTog: tg('sop'), stOpLabel: op, stOpItems: STOPS.map(l => it(op === l, l, () => upd(a.id, { op: l }, { pop: null }))),
+        popSst: onP('sst'), stTog: tg('sst'), stBoxLabel: a.target || 'ステータスを選択', stBoxText: a.target ? 'color:#222' : 'color:#888',
+        stBoxStyle: 'width:320px;box-sizing:border-box;height:40px;border:1px solid ' + (s.tried && !a.target ? '#F44336' : '#E0E0E0') + ';border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer',
+        stItems: STS.map(l => it(a.target === l, l, () => upd(a.id, { target: l }, { pop: null }))), stErr: !!s.tried && !a.target,
+        stSummary: a.target ? a.target + 'のステータス' + (op === STOPS[0] ? 'をつける' : 'を外す') : 'ステータスを選択してください' };
+    };
+    const frF = a => {
+      if (a.type !== 'friend') return { isFr: false };
+      const op = a.op || FDEL, del = op === FDEL, cat = a.fcat || '基本情報', items = FRI[cat], on = !!s.pop && s.pop.id === a.id && s.pop.kind === 'fi';
+      const onO = !!s.pop && s.pop.id === a.id && s.pop.kind === 'fop';
+      return { popFop: onO, frOpTog: () => set({ pop: onO ? null : { id: a.id, kind: 'fop' } }),
+        frOpItems: [FDEL, '以下の情報を登録'].map(label => ({ label, pick: () => upd(a.id, { op: label }, { pop: null }), style: 'padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (op === label ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })),
+        isFr: true, frOpVal: op, frOpOpts: [FDEL, '以下の情報を登録'].map(v => ({ v, l: v })), setFrOp: e => upd(a.id, { op: e.target.value }),
+        frTog: () => set({ pop: on ? null : { id: a.id, kind: 'fi' } }), popFi: on, frBoxLabel: a.target || '友だち情報選択', frBoxText: a.target ? 'color:#222' : 'color:#888',
+        frBoxStyle: 'width:280px;box-sizing:border-box;height:40px;border:1px solid ' + (s.tried && !a.target ? '#F44336' : '#E0E0E0') + ';border-radius:6px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;font-size:14px;background:#fff;cursor:pointer',
+        fiCats: Object.keys(FRI).map(name => ({ name, pick: () => upd(a.id, { fcat: name }), style: 'display:flex;justify-content:space-between;padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px;' + (cat === name ? 'background:#08BF5A;color:#fff;font-weight:600' : 'color:#222222') })),
+        fiItems: items.map(name => ({ name, pick: () => upd(a.id, { target: name }, { pop: null }), style: 'padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px;' + (a.target === name ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })), fiEmpty: items.length === 0,
+        frSummary: a.target ? (del ? a.target + 'の登録情報を削除' : a.target + 'に以下の情報を登録') : '友だち情報を選択してください',
+        isReg: !del, frVal: a.val || '', setFrVal: e => upd(a.id, { val: e.target.value }), frValErr: !del && !(a.val || '').trim() && !!a.target, frTargetErr: !!s.tried && !a.target };
+    };
+    const tagF = a => {
+      if (a.type !== 'tag') return { isTag: false };
+      const fol = a.tfolder || 'つ未分類'.slice(1), names = s.tagFolders[fol] || [];
+      const onT = !!s.pop && s.pop.id === a.id && s.pop.kind === 'top', cop = a.op || 'つける';
+      return { popTop: onT, tOpTog: () => set({ pop: onT ? null : { id: a.id, kind: 'top' } }),
+        tOpItems: ['つける', 'はずす'].map(label => ({ label, pick: () => upd(a.id, { op: label }, { pop: null }), style: 'padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (cop === label ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })),
+        isTag: true, opVal: a.op || 'つける', opOpts: [{ v: 'つける', l: 'つける' }, { v: 'はずす', l: 'はずす' }], setOp: e => upd(a.id, { op: e.target.value }),
+        tfolders: Object.keys(s.tagFolders).map(name => ({ name, pick: () => upd(a.id, { tfolder: name }), style: 'display:flex;justify-content:space-between;padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px;' + (fol === name ? 'background:#08BF5A;color:#fff;font-weight:600' : 'color:#222222') })),
+        titems: names.map(name => { const on = a.target === name; return { name, pick: () => upd(a.id, { target: name }), style: 'display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;border-bottom:1px solid #E0E0E0;background:' + (on ? '#F4FBF2' : '#fff'),
+          dot: 'width:16px;height:16px;border-radius:50%;box-sizing:border-box;flex:none;background:#fff;border:' + (on ? '5px solid #08BF5A' : '1.5px solid #bbb') }; }),
+        tEmpty: names.length === 0, openTagModal: () => set({ tagModal: { id: a.id, folder: fol, name: '', fopen: false } }),
+        tSummary: a.target ? 'タグを' + (a.op || 'つける') + '：' + a.target : 'タグを選択してください', openUpg: () => set({ upg: true }) };
+    };
+    const tm = s.tagModal, tmOk = !!tm && !!tm.name.trim();
+    const tagVals = { tmOpen: !!tm, tmFolder: tm ? tm.folder : '', tmFopen: !!tm && tm.fopen, tmName: tm ? tm.name : '', tmCount: tm ? tm.name.length : 0,
+      tmFoldTog: () => set({ tagModal: { ...tm, fopen: !tm.fopen } }), setTmName: e => set({ tagModal: { ...tm, name: e.target.value.slice(0, 50) } }),
+      tmFolders: Object.keys(s.tagFolders).map(name => ({ name, pick: () => set({ tagModal: { ...tm, folder: name, fopen: false } }), style: 'padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (tm && tm.folder === name ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })),
+      tmClose: () => set({ tagModal: null }), tmSaveStyle: 'height:42px;padding:0 24px;border:0;border-radius:6px;font-size:14px;font-weight:600;color:#fff;background:' + (tmOk ? '#08BF5A' : '#b8c2bc') + ';cursor:' + (tmOk ? 'pointer' : 'not-allowed'),
+      tmSave: () => { if (!tmOk) return; const name = tm.name.trim(), cur = s.tagFolders[tm.folder] || [];
+        set({ tagFolders: { ...s.tagFolders, [tm.folder]: cur.includes(name) ? cur : [...cur, name] }, tagModal: null, actions: s.actions.map(a => a.id === tm.id ? { ...a, target: name, tfolder: tm.folder, open: true } : a), activeId: tm.id }); },
+      upgOpen: s.upg, closeUpg: () => set({ upg: false }) };
+    const acts = s.actions.map((a, i) => ({ a, i })).filter(({ a }) => a.type === 'tpl').slice(0, 1).map(({ a, i }) => {
+      const ok = valid(a), T = TY[a.type], tpl = s.tpls.find(t => t.id === a.tplId), act = s.activeId === a.id, cf = s.delId === a.id;
+      const onP = k => !!s.pop && s.pop.id === a.id && s.pop.kind === k, tgl = k => () => set({ pop: onP(k) ? null : { id: a.id, kind: k } });
+      const mi = (sel, label, pick) => ({ label, pick, style: 'padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (sel ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') });
+      const fk = a.filter || 'none', rop = a.op === 'stop' ? 'stop' : 'start';
+      return { chipLabel: a.type === 'tpl' ? 'エリア1' : 'アクション' + (i + 1), headTitle: a.type === 'tpl' ? '送信するテンプレートの設定' : T.t, aid: a.id, popFl: onP('fl'), flTog: tgl('fl'), flLabel: { none: '絞り込みなし', tag: 'タグで絞り込む', info: '友だち情報で絞り込む' }[fk],
+        flItems: [['none', '絞り込みなし'], ['tag', 'タグで絞り込む'], ['info', '友だち情報で絞り込む']].map(([v, l]) => mi(fk === v, l, () => upd(a.id, { filter: v }, { pop: null }))),
+        popOp: onP('op'), rOpTog: tgl('op'), rOpLabel: rop === 'stop' ? 'リマインド配信を停止' : 'リマインド配信を開始',
+        opItems: [['start', 'リマインド配信を開始'], ['stop', 'リマインド配信を停止']].map(([v, l]) => mi(rop === v, l, () => upd(a.id, { op: v }, { pop: null }))), domId: 'act-' + a.id, num: i + 1, title: T.t, status: ok ? '設定済み' : '未設定', chip: ok ? chipOk : chipNo,
+        cardStyle: `background:#fff;border:1px solid ${act ? '#5799DB' : '#E0E0E0'};border-radius:8px;padding:14px 20px;${act ? 'box-shadow:0 0 0 3px rgba(29,116,208,.12)' : ''}`,
+        confirming: cf, normal: !cf, isOpen: a.open, isClosed: !a.open, isTpl: a.type === 'tpl', isText: a.type === 'text', ...genF(a), ...remF(a), ...tagF(a),
+        ...frF(a), ...stF(a), ...stpF(a), isBl: a.type === 'block', blSummary: a.op || 'ブロックする',
+        blOpts: ['ブロックする', 'ブロック解除', '表示', '非表示'].map(label => { const on = (a.op || 'ブロックする') === label; return { label, pick: () => upd(a.id, { op: label }, { activeId: a.id }), dot: 'width:16px;height:16px;border-radius:50%;box-sizing:border-box;flex:none;background:#fff;border:' + (on ? '5px solid #08BF5A' : '1.5px solid #bbb') }; }), isBm: a.type === 'bookmark', bmUpg: () => set({ upg: true }),
+        bmOpts: ['ブックマークする', 'ブックマークを外す'].map(label => { const on = (a.op || 'ブックマークする') === label; return { label, pick: () => upd(a.id, { op: label }, { activeId: a.id }), dot: 'width:16px;height:16px;border-radius:50%;box-sizing:border-box;flex:none;background:#fff;border:' + (on ? '5px solid #08BF5A' : '1.5px solid #bbb') }; }),
+        chev: a.open ? '⌃' : '⌄', chevText: a.open ? '折りたたむ' : '展開する', toggle: () => upd(a.id, { open: !a.open }, { activeId: a.id }),
+        askDel: e => { e && e.stopPropagation(); set({ delId: a.id }); }, cancelDel: e => { e && e.stopPropagation(); set({ delId: null }); }, doDel: e => { e && e.stopPropagation(); set({ actions: s.actions.filter(x => x.id !== a.id), delId: null }); },
+        label: T.lab, ph: T.ph, val: a.val, setVal: e => upd(a.id, { val: a.type === 'text' ? e.target.value.slice(0, 5000) : e.target.value }, { activeId: a.id }),
+        taId: 'ta-' + a.id, count: a.val.length.toLocaleString(), hasPv: a.val.includes('{'), pv: pvOf(a.val) !== a.val ? '表示例（サンプル）：' + pvOf(a.val).replace(/\n/g, ' ').slice(0, 120) : '',
+        insName: () => ins(a, '{name}'), togFriend: () => set({ fcat: '基本情報', pop: s.pop && s.pop.id === a.id && s.pop.kind === 'f' ? null : { id: a.id, kind: 'f' } }), togEmoji: () => set({ pop: s.pop && s.pop.id === a.id && s.pop.kind === 'e' ? null : { id: a.id, kind: 'e' } }),
+        popFriend: !!s.pop && s.pop.id === a.id && s.pop.kind === 'f', popEmoji: !!s.pop && s.pop.id === a.id && s.pop.kind === 'e',
+        fcats: Object.keys(FI).map(name => ({ name, pick: () => set({ fcat: name }), style: `display:flex;justify-content:space-between;padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px;${(s.fcat || '基本情報') === name ? 'background:#08BF5A;color:#fff;font-weight:600' : 'color:#222222'}` })),
+        fitems: FI[s.fcat || '基本情報'].map(([name, tag]) => ({ name, add: () => ins(a, tag) })), fempty: FI[s.fcat || '基本情報'].length === 0,
+        emojis: ['😊', '😉', '🎁', '✨', '🎉', '💇', '✂️', '💖', '👍', '🙏', '🌸', '⭐', '📅', '☎️', '🎫', '❗'].map(ch => ({ ch, add: () => ins(a, ch) })),
+        filterOpen: !!a.fopen, filterChev: a.fopen ? '⌃' : '⌄', filterToggle: () => upd(a.id, { fopen: !a.fopen }), filterKind: a.filter || 'none', setFilter: e => upd(a.id, { filter: e.target.value }),
+        filterLabel: (a.filter || 'none') === 'none' ? '絞込 未設定' : '絞込 設定済み', filterChip: (a.filter || 'none') === 'none' ? chipNo : chipOk, hasCond: (a.filter || 'none') !== 'none', cond: a.cond || '', setCond: e => upd(a.id, { cond: e.target.value }),
+        condPh: a.filter === 'tag' ? '例：来店予約済み' : '例：来店回数が3回以上',
+        err: errOf(a), showErr: !ok && (s.tried || !a.open) && !(a.type === 'remind' && a.rid && a.open),
+        summary: sumOf(a, tpl),
+        create: () => set({ screen: 2, createFor: a.id }), noRows: list.length === 0,
+        rows: list.map(t => { const on = a.tplId === t.id; return { name: t.name, isNew: !!t.isNew, pick: () => upd(a.id, { tplId: t.id }, { activeId: a.id }),
+          style: `display:flex;align-items:center;gap:12px;padding:11px 16px;cursor:pointer;border-bottom:1px solid #E0E0E0;background:${on ? '#F4FBF2' : '#fff'}`,
+          dot: `width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:${on ? '5px solid ' + g : '1.5px solid #bbb'};background:#fff` }; }) };
+    });
+    const addAct = type => { const id = 'n' + s.nid, sp = SPEC[type]; this._sc = id;
+      set({ actions: [...s.actions.map(a => valid(a) ? { ...a, open: false } : a), { id, type, tplId: null, val: '', op: type === 'remind' ? 'start' : (sp && sp.ops ? sp.ops[0] : ''), target: '', rid: null, date: '', th: null, tm: '00', day: '0', open: true }], nid: s.nid + 1, menuOpen: false, mm: 'main', activeId: id }); };
+    const menu = [['text', 'テキストを送信'], ['tpl', 'テンプレートを送信'], ['tag', 'タグを付ける・外す'], ['step', 'ステップ']].map(([t, name]) => ({ name, add: () => addAct(t) }));
+    const menuMore = { add: () => set({ mm: 'all' }) };
+    const menuAll = [['step', 'ステップ'], ['tpl', 'テンプレート'], ['text', 'テキスト'], ['remind', 'リマインド'], ['tag', 'タグ'], ['bookmark', 'ブックマーク'], ['friend', '友だち情報'], ['status', '対応ステータス'], ['block', 'ブロック・非表示']].map(([t, name]) => ({ name, add: () => addAct(t) }));
+    const bad = s.actions.findIndex(a => a.type === 'tpl' && !valid(a)), allOk = bad < 0;
+    const btn = (on) => `height:46px;padding:0 40px;border:0;border-radius:6px;font-size:14px;font-weight:600;color:#fff;background:${on ? g : '#b8c2bc'};cursor:${on ? 'pointer' : 'not-allowed'}`;
+    const ba = s.actions[bad];
+    const hint1 = allOk ? '' : (ba.type === 'tpl' ? errOf(ba) : 'アクション' + (bad + 1) + '：' + errOf(ba));
+    const reset = () => ({ actions: s.saved ? JSON.parse(JSON.stringify(s.saved)) : this.initActions(), menuOpen: false, delId: null, tried: false, activeId: 'a1', selId: null, q: '' });
+    const cur0 = s.tpls.find(t => t.id === s.selId) || s.tpls[2];
+    const cur = { id: cur0.id, name: cur0.name, body: cur0.body, total: 1 };
+    const startEdit = copy => { const t = cur0, mt = t.mtype || 'text';
+      set({ ...this.blankForm(), editId: t.id, editCopy: !!copy, screen: 2, dlg: false, newName: copy ? t.name + '（コピー）' : t.name, newFolder: t.folder || '未分類', mtype: mt, newText: mt === 'text' ? (t.text != null ? t.text : t.body) : '',
+        panels: t.panels ? JSON.parse(JSON.stringify(t.panels)) : this.blankForm().panels, ctype: t.ctype || 'std', altText: t.altText || '', runMode: t.runMode || 'once', urlPv: t.urlPv || 'show' }); };
+    const ai = s.actions.findIndex(a => a.type === 'tpl' && a.tplId === s.selId), aidT = ai >= 0 ? s.actions[ai].id : (s.actions[0] && s.actions[0].id);
+    const otherActs = s.actions.map((a, i) => ({ a, i })).filter(({ a }) => a.type !== 'tpl' || a.tplId !== s.selId).filter(({ a }) => valid(a)).map(({ a, i }) => ({ label: 'アクション' + (i + 1), text: sumOf(a, s.tpls.find(t => t.id === a.tplId)) }));
+    const uses = [{ kind: 'リッチメニュー', name: 'KESH｜メインメニュー', where: 'エリア1', now: true }].map(u => ({
+      ...u, isNow: u.now, other: !u.now, key: u.kind + u.name + u.where, open: !u.now && s.openUse === u.kind + u.name + u.where, chev: s.openUse === u.kind + u.name + u.where ? '⌃' : '⌄', rowStyle: 'display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:6px;border:1px solid ' + (u.now ? '#08BF5A' : '#E0E0E0') + ';background:' + (u.now ? '#F4FBF2' : '#fff') + (u.now ? '' : ';cursor:pointer'),
+      rowClick: () => { if (!u.now) set({ openUse: s.openUse === u.kind + u.name + u.where ? null : u.kind + u.name + u.where }); },
+      style: `display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:6px;border:1px solid ${u.now ? g : '#E0E0E0'};background:${u.now ? '#F4FBF2' : '#fff'}`,
+      tag: `font-size:12px;line-height:16px;font-weight:600;padding:3px 8px;border-radius:4px;color:#fff;background:${u.kind === 'リッチメニュー' ? '#5799DB' : '#7a52c7'}` }));
+    const G = g, P = s.panels, ap = Math.min(s.ap, P.length - 1), cp = P[ap];
+    const setP = (list, x) => set({ panels: list, ...(x || {}) });
+    const updP = o => setP(P.map((p, i) => i === ap ? { ...p, ...o } : p));
+    const updB = (j, o) => updP({ btns: cp.btns.map((b, k) => k === j ? { ...b, ...o } : b) });
+    const sel = (on) => on ? `border:1.5px solid ${G};background:#F4FBF2;color:#23814D` : 'border:1.5px solid #E0E0E0;background:#fff;color:#444';
+    const mtypes = [['text', 'テキスト'], ['panel', 'パネル・ボタン'], ['media', '画像・動画・音声'], ['stamp', 'スタンプ'], ['loc', '位置情報']].map(([k, label]) => ({ label, pick: () => set({ mtype: k }), style: `height:40px;padding:0 18px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;${sel(s.mtype === k)}` }));
+    const ctypes = [['std', 'スタンダード'], ['color', 'カラーボタン'], ['img', '画像'], ['qr', 'クイックリプライ']].map(([k, label]) => { const on = s.ctype === k; return { label, pick: () => set({ ctype: k }),
+      style: `border:1.5px solid ${on ? G : '#E0E0E0'};border-radius:6px;overflow:hidden;cursor:pointer;background:#fff`, head: `text-align:center;font-size:14px;font-weight:600;padding:7px;background:${on ? G : '#fff'};color:${on ? '#fff' : '#333'}`,
+      btn: k === 'color' ? 'height:14px;background:#08BF5A;border-radius:7px' : k === 'std' ? 'height:5px;background:#c9d3ee;border-radius:3px;width:40%;align-self:center' : 'height:0' }; });
+    const tabs = [['panel', 'パネル設定'], ['detail', '詳細設定']].map(([k, label]) => ({ label, pick: () => set({ tab: k }), style: `padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;color:${s.tab === k ? '#23814D' : '#777'};border-bottom:2px solid ${s.tab === k ? G : 'transparent'};margin-bottom:-1px` }));
+    const panelChips = P.map((p, i) => ({ label: 'パネル' + (i + 1), pick: () => set({ ap: i }), style: `display:flex;align-items:center;gap:8px;padding:7px 14px;border-radius:6px;font-size:14px;cursor:pointer;${sel(i === ap)};${s.t2tried && (!p.body.trim() || p.btns.some(b => !b.text.trim())) ? 'border-color:#F44336' : ''}`, tag: i === ap ? 'font-size:12px;line-height:16px;background:#08BF5A;color:#fff;border-radius:8px;padding:1px 7px' : 'display:none' }));
+    const maxB = P.length === 1 ? 4 : 3;
+    const mkBtn = () => ({ id: 'b' + Math.random().toString(36).slice(2, 8), text: '', bg: '#08BF5A', fg: '#ffffff', kind: 'lme', url: '', act: null, open: true });
+    const dot = on => `width:16px;height:16px;border-radius:50%;box-sizing:border-box;flex:none;border:${on ? '5px solid ' + G : '1.5px solid #bbb'};background:#fff`;
+    const mv = (j, d) => { const l = [...cp.btns]; const k = j + d; if (k < 0 || k >= l.length) return; [l[j], l[k]] = [l[k], l[j]]; updP({ btns: l }); };
+    const hexOk = v => /^#[0-9a-fA-F]{6}$/.test(v || '');
+    const nb = (b, j) => ({ id: b.id || 'bi' + j, text: b.text || '', bg: b.bg != null ? b.bg : '#08BF5A', fg: b.fg != null ? b.fg : '#ffffff', kind: b.kind || 'lme', url: b.url || '', act: b.act || null, open: b.open !== false, oOpen: !!b.oOpen });
+    const BL = cp.btns.map(nb);
+    const SPEC2 = { text: { l: 'テキストを送信', val: '送信するテキスト', ph: '送信するテキストを入力', area: 1 }, tpl: { l: 'テンプレートを送信', tpl: 1 }, tag: { l: 'タグを付ける・外す', ops: ['つける', 'はずす'], val: 'タグ名', ph: '例：来店予約済み' },
+      step: { l: 'ステップ', ops: ['停止', '開始／再開', '途中から配信'], val: 'ステップ名', ph: '例：KESH｜友だち追加後のご案内' }, remind: { l: 'リマインド', ops: ['配信を開始', '配信を停止'], val: 'リマインド名', ph: '例：来店3日前リマインド' },
+      bookmark: { l: 'ブックマーク', ops: ['ブックマークする', 'ブックマークを外す'] }, friend: { l: '友だち情報', ops: ['情報を登録', '登録情報を削除'], val: '登録する値', ph: '登録する値を入力', valIf: o => o === '情報を登録' },
+      status: { l: '対応ステータス', ops: ['ステータスをつける', 'ステータスを外す'], sts: 1 }, block: { l: 'ブロック・非表示', ops: ['ブロックする', 'ブロック解除', '表示', '非表示'] } };
+    const BASIC = ['text', 'tpl', 'tag'], OTHER = ['step', 'remind', 'bookmark', 'friend', 'status', 'block'], STL = ['見込みあり', '対応中', 'フォロー', 'トラブル', '対応完了'];
+    const opOf = A => A && A.type ? (A.op || (SPEC2[A.type].ops ? SPEC2[A.type].ops[0] : '')) : '';
+    const actErr = b => { if (b.kind !== 'lme') return ''; const A = b.act; if (!A || !A.type) return ''; const sp = SPEC2[A.type], op = opOf(A);
+      if (sp.tpl && !A.tpl) return 'テンプレートを選択してください'; if (sp.val && (!sp.valIf || sp.valIf(op)) && !(A.val || '').trim()) return sp.val + 'を入力してください'; if (sp.sts && !A.st) return 'ステータスを選択してください'; return ''; };
+    const actSum = b => { if (b.kind === 'url') return b.url.trim() ? 'URLスキーム：' + b.url.trim() : 'URLスキーム未入力'; const A = b.act; if (!A || !A.type) return 'アクション未設定';
+      const sp = SPEC2[A.type], op = opOf(A), tp = s.tpls.find(t => t.id === A.tpl); return sp.l + (op ? '｜' + op : '') + (sp.tpl && tp ? '｜' + tp.name : '') + (sp.sts && A.st ? '｜' + A.st : '') + (sp.val && A.val && (!sp.valIf || sp.valIf(op)) ? '｜' + (A.type === 'friend' ? '値あり' : A.val.slice(0, 20)) : ''); };
+    const cp2 = (on) => 'height:34px;padding:0 14px;border-radius:17px;font-size:14px;cursor:pointer;' + sel(on);
+    const actView = (b, j) => { const A = b.act || { type: '' }, ty = A.type, sp = ty ? SPEC2[ty] : null, op = opOf(A), oo = !!cp.btns[j].oOpen, setA = o => updB(j, { act: { ...A, type: ty, op, ...o } });
+      return { actChips: [['', 'なし'], ...BASIC.map(k => [k, SPEC2[k].l])].map(([k, label]) => ({ label, style: cp2(ty === k), pick: () => updB(j, { act: k ? { type: k } : null, oOpen: false }) })).concat([{ label: (OTHER.includes(ty) ? SPEC2[ty].l : 'その他のアクション') + ' ⌄', style: cp2(OTHER.includes(ty) || oo), pick: () => updB(j, { oOpen: !oo }) }]),
+        otherOpen: oo, otherChips: OTHER.map(k => ({ label: SPEC2[k].l, style: cp2(ty === k), pick: () => updB(j, { act: { type: k }, oOpen: false }) })),
+        hasOps: !!sp && !!sp.ops, opChips: (sp && sp.ops || []).map(o => ({ label: o, style: cp2(op === o), pick: () => setA({ op: o }) })),
+        dTpl: !!sp && !!sp.tpl, tplRows: s.tpls.map(t => ({ name: t.name, pick: () => setA({ tpl: t.id }), dot: dot(A.tpl === t.id), style: 'display:flex;align-items:center;gap:10px;padding:9px 12px;font-size:14px;cursor:pointer;border-bottom:1px solid #E0E0E0;background:' + (A.tpl === t.id ? '#F4FBF2' : '#fff') })),
+        dArea: !!sp && !!sp.area, dInput: !!sp && !!sp.val && !sp.area && (!sp.valIf || sp.valIf(op)), aValLabel: sp && sp.val || '', aPh: sp && sp.ph || '', aVal: A.val || '', setAVal: e => setA({ val: e.target.value.slice(0, 5000) }),
+        dSts: !!sp && !!sp.sts, stChips: STL.map(l => ({ label: l, style: cp2(A.st === l), pick: () => setA({ st: l }) })),
+        aErr: !!s.t2tried && !!actErr(b), aErrMsg: actErr(b) }; };
+    const dis = on => on ? '' : 'opacity:.3;cursor:not-allowed';
+    const btns = BL.map((b, j) => { const conf = s.delB === b.id, bad = !!s.t2tried && !b.text.trim(), bgv = hexOk(b.bg) ? b.bg : '#08BF5A', fgv = hexOk(b.fg) ? b.fg : '#ffffff', canAdd = cp.btns.length < maxB;
+      return { cardId: 'btn-card-' + b.id, eid: 'err-pbtn-' + b.id, num: j + 1, text: b.text, count: b.text.length, bErr: bad, isOpen: b.open, isClosed: !b.open, chev: b.open ? '⌃' : '⌄', confirming: conf, normal: !conf,
+        summary: (b.text.trim() || 'ボタン名未入力') + '｜' + actSum(b), toggle: () => updB(j, { open: !b.open }),
+        inStyle: 'width:100%;box-sizing:border-box;height:40px;border-radius:6px;padding:0 12px;font-size:14px;font-family:inherit;border:1px solid ' + (bad ? '#F44336' : '#E0E0E0'),
+        setText: e => updB(j, { text: e.target.value.slice(0, 20) }),
+        bg: b.bg, fg: b.fg, bgPick: bgv, fgPick: fgv, setBg: e => updB(j, { bg: e.target.value }), setFg: e => updB(j, { fg: e.target.value }),
+        up: () => mv(j, -1), down: () => mv(j, 1), upSt: dis(j > 0), downSt: dis(j < cp.btns.length - 1), copySt: dis(canAdd),
+        copy: () => { if (!canAdd) return; const nid = 'b' + Math.random().toString(36).slice(2, 8); this._sc2 = 'btn-card-' + nid; updP({ btns: [...cp.btns, { ...cp.btns[j], id: nid, open: true, act: b.act ? { ...b.act } : null }] }); },
+        askDel: () => set({ delB: b.id }), cancelDel: () => set({ delB: null }), doDel: () => { if (cp.btns.length > 1) updP({ btns: cp.btns.filter((_, k) => k !== j) }); set({ delB: null }); },
+        isLme: b.kind === 'lme', isUrl: b.kind === 'url', dotLme: dot(b.kind === 'lme'), dotUrl: dot(b.kind === 'url'), pickLme: () => updB(j, { kind: 'lme' }), pickUrl: () => updB(j, { kind: 'url' }),
+        ...actView(b, j),
+        url: b.url, setUrl: e => updB(j, { url: e.target.value }) }; });
+
+    const insP = (key, max, add) => () => updP({ [key]: (cp[key] + add).slice(0, max) });
+    const btnOk = P.every(p => p.btns.every(b => b.text.trim()));
+    const ok2 = !!s.newName.trim() && (s.mtype === 'text' ? !!s.newText.trim() : s.mtype === 'panel' ? (P.every(p => p.body.trim()) && btnOk) : true);
+    const nameBad = !s.newName.trim(), textBad = s.mtype === 'text' && !s.newText.trim();
+    const pBad = s.mtype === 'panel' ? P.map(p => ({ body: !p.body.trim(), btns: p.btns.map((b, k) => !b.text.trim() || !!actErr(nb(b, k))) })) : [];
+    const errTotalN = (nameBad ? 1 : 0) + (textBad ? 1 : 0) + pBad.reduce((n, p) => n + (p.body ? 1 : 0) + p.btns.filter(Boolean).length, 0);
+    const firstErr = () => { if (nameBad) return { id: 'err-name' }; if (textBad) return { id: 'ta-new', tab2: true };
+      for (let i = 0; i < pBad.length; i++) { if (pBad[i].body) return { id: 'err-pbody', ap: i }; const j = pBad[i].btns.indexOf(true); if (j >= 0) { const bb = P[i].btns[j], bid = bb.id || 'bi' + j; return { id: (bb.text || '').trim() ? 'btn-card-' + bid : 'err-pbtn-' + bid, ap: i, bj: j }; } } return null; };
+    const fld = (bad, base) => 'width:100%;box-sizing:border-box;border-radius:6px;font-family:inherit;border:1px solid ' + (s.t2tried && bad ? '#F44336' : '#E0E0E0') + ';' + base;
+    const ct = s.ctype, pvB = s.mtype === 'panel';
+    const pvBtns = pvB && (ct === 'std' || ct === 'color') ? cp.btns.map(nb).map(b => ({ text: b.text || 'ボタン', style: (ct === 'std' ? 'border-top:1px solid #eee;' : 'margin:6px 10px 10px;border-radius:6px;') + 'background:' + (hexOk(b.bg) ? b.bg : '#08BF5A') + ';color:' + (hexOk(b.fg) ? b.fg : '#ffffff') + ';text-align:center;font-weight:600;padding:10px;font-size:14px' })) : [];
+    const bodyOfCur = s.mtype === 'text' ? s.newText : s.mtype === 'panel' ? [P[0].title, P[0].body].filter(Boolean).join('\n') : '（このタイプのメッセージ）';
+    const fmts = [];
+    const T2 = [['LINE名', '{name}', '神田 史'], ['経過日数・指定日付', '[ELAPSED_DATE]', '2026年11月15日'], ['配信日の日付', '[DELIVERY_DATE]', '2026年11月12日'], ['友だち情報', '[FRIEND_INFO_system_name]', '神田 史'],
+      ['回答フォームURL', '[FORM_URL]', 'https://example.com/form/abc'], ['商品販売ページURL', '[PRODUCT_URL]', 'https://example.com/shop/xyz'], ['サロン・面談予約', '[SALON_RESERVE_URL]', 'https://example.com/salon'], ['レッスン予約', '[LESSON_RESERVE_URL]', 'https://example.com/lesson'], ['イベント予約URL', '[EVENT_RESERVE_URL]', 'https://example.com/event']];
+    const DD = new Date(2026, 10, 12), WD = ['日', '月', '火', '水', '木', '金', '土'];
+    const fmtD = (d, k) => { const y = d.getFullYear(), m = d.getMonth() + 1, dd = d.getDate(), w = '（' + WD[d.getDay()] + '）';
+      return { ymdw: y + '年' + m + '月' + dd + '日' + w, ymd: y + '年' + m + '月' + dd + '日', mdw: m + '月' + dd + '日' + w, md: m + '月' + dd + '日', slw: y + '/' + pad(m) + '/' + pad(dd) + w, sl: y + '/' + pad(m) + '/' + pad(dd), smw: pad(m) + '/' + pad(dd) + w, sm: pad(m) + '/' + pad(dd) }[k] || ''; };
+    const pv2 = v => { let t = T2.reduce((t, [, k, r]) => t.split(k).join(r), pvOf(v));
+      t = t.replace(/\[DELIVERY_DATE:(\w+)\]/g, (m, k) => fmtD(DD, k));
+      t = t.replace(/\[DAYS_TO:(\d+)\/(\d+)\/(\d+)\]/g, (m, y, mo, d) => String(Math.round((new Date(+y, +mo - 1, +d) - DD) / 864e5)));
+      return t.replace(/\[DATE_AFTER:(\d+):(\w+)\]/g, (m, n, k) => fmtD(new Date(2026, 10, 12 + Number(n)), k)); };
+    const insT = (t, keep) => {
+      const el = document.getElementById('ta-new'), v = s.newText; let st = v.length, en = v.length;
+      if (el && el.selectionStart != null) { st = el.selectionStart; en = el.selectionEnd; }
+      if (v.length - (en - st) + t.length > 5000) { set({ txErr: '5,000文字を超えるため挿入できません' }); return; }
+      set({ newText: v.slice(0, st) + t + v.slice(en), txErr: '', ...(keep ? {} : { tp: null }) });
+      setTimeout(() => { const e2 = document.getElementById('ta-new'); if (e2) { e2.focus(); const p = Math.min(st + t.length, 5000); e2.setSelectionRange(p, p); } }, 30);
+    };
+    const EM = [{"n":"顔・人物","i":"😀","l":[["😀","smile 笑顔"],["😊","smile happy にこにこ"],["😆","laugh 笑"],["🥰","love 愛"],["😍","heart eyes ハート目"],["😉","wink ウインク"],["😢","cry 泣く"],["😭","sob 号泣"],["😮","surprise 驚き"],["🤔","think 考える"],["😎","cool サングラス"],["🙏","thanks pray ありがとう お願い"],["👍","good like いいね"],["👏","clap 拍手"],["💪","muscle 筋肉"],["👋","wave 手を振る"]]},{"n":"自然・動物","i":"🐻","l":[["🐶","dog 犬"],["🐱","cat 猫"],["🐻","bear くま"],["🐰","rabbit うさぎ"],["🐼","panda パンダ"],["🌸","sakura cherry 桜"],["🌹","rose バラ"],["🌻","sunflower ひまわり"],["🍀","clover クローバー"],["🌈","rainbow 虹"],["☀️","sun 太陽"],["🌙","moon 月"],["⭐","star 星"],["⛄","snow 雪"],["🔥","fire 火"],["💧","water 水"]]},{"n":"食べ物・飲み物","i":"🍔","l":[["🍎","apple りんご"],["🍰","cake ケーキ"],["🍞","bread パン"],["🍜","ramen ラーメン"],["🍣","sushi 寿司"],["🍔","burger ハンバーガー"],["🍕","pizza ピザ"],["🍺","beer ビール"],["☕","coffee コーヒー"],["🍵","tea お茶"],["🍷","wine ワイン"],["🍓","strawberry いちご"],["🍙","onigiri おにぎり"],["🍩","donut ドーナツ"],["🍫","chocolate チョコ"],["🥗","salad サラダ"]]},{"n":"アクティビティ","i":"⚽","l":[["⚽","soccer サッカー"],["🏀","basketball バスケ"],["⚾","baseball 野球"],["🎾","tennis テニス"],["🎮","game ゲーム"],["🎵","music 音楽"],["🎤","karaoke カラオケ"],["🎉","party 祝 クラッカー"],["🎁","gift プレゼント"],["🎂","birthday 誕生日"],["🏆","trophy トロフィー"],["🎫","ticket チケット"],["🎨","art 絵"],["🧘","yoga ヨガ"],["🏊","swim 水泳"],["🎈","balloon 風船"]]},{"n":"旅行・場所","i":"🚗","l":[["🚗","car 車"],["🚃","train 電車"],["✈️","plane 飛行機"],["🚲","bicycle 自転車"],["🏠","house 家"],["🏢","building ビル"],["🏨","hotel ホテル"],["🏥","hospital 病院"],["🗼","tower タワー"],["🗻","fuji 富士山"],["🏖️","beach 海"],["⛩️","shrine 神社"],["🚏","bus バス"],["📍","pin 場所"],["🗾","japan 日本"],["🌏","earth 地球"]]},{"n":"物・記号","i":"💡","l":[["💡","idea 電球"],["📅","calendar カレンダー 予定"],["☎️","phone 電話"],["📱","mobile スマホ"],["✉️","mail メール"],["💇","hair 美容室 ヘアサロン"],["✂️","scissors はさみ"],["💄","lipstick 口紅"],["💖","heart ハート"],["❤️","red heart 赤ハート"],["✨","sparkle キラキラ"],["❗","attention 注意"],["❓","question 質問"],["✅","check チェック"],["➡️","arrow 矢印"],["💰","money お金"]]},{"n":"旗","i":"🚩","l":[["🚩","flag 旗"],["🏁","finish ゴール"],["🎌","japan flag 日の丸"],["🇯🇵","japan 日本"],["🇺🇸","usa アメリカ"],["🇬🇧","uk イギリス"],["🇰🇷","korea 韓国"],["🇨🇳","china 中国"],["🇫🇷","france フランス"],["🇩🇪","germany ドイツ"],["🇮🇹","italy イタリア"],["🇪🇸","spain スペイン"],["🇨🇦","canada カナダ"],["🇦🇺","australia オーストラリア"],["🏳️","white flag 白旗"],["🏴","black flag 黒旗"]]}];
+    const radioDot = on => 'width:16px;height:16px;border-radius:50%;box-sizing:border-box;flex:none;background:#fff;border:' + (on ? '5px solid #08BF5A' : '1.5px solid #bbb');
+    const tb = on => 'height:32px;padding:0 12px;border-radius:5px;font-size:14px;cursor:pointer;color:#222222;border:1px solid ' + (on ? '#08BF5A' : '#E0E0E0') + ';background:' + (on ? '#F4FBF2' : '#fff');
+    const pdf = s.pdf, tpT = k => () => set({ tp: s.tp === k ? null : k });
+    const pdfUrl = pdf && pdf.name ? 'https://demo.example/pdf/' + Math.abs([...pdf.name].reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7)).toString(36) + '.pdf' : '';
+    const pickFile = f => { if (!f) return;
+      if (!/\.pdf$/i.test(f.name) && f.type !== 'application/pdf') return set({ pdf: { error: 'PDF形式のファイルのみアップロードできます' } });
+      if (f.size > 10 * 1024 * 1024) return set({ pdf: { error: 'ファイルサイズが10MBを超えています' } });
+      set({ pdf: { name: f.name, size: f.size, status: 'busy' } }); setTimeout(() => this.setState(st => st.pdf && st.pdf.name === f.name ? { pdf: { ...st.pdf, status: 'done' } } : null), 1000); };
+    const IC = ['LINE名', '経過日数・指定日付', '配信日の日付', '友だち情報', '回答フォームURL', '商品販売ページURL', 'サロン・面談予約', 'レッスン予約', 'イベント予約URL'];
+    const imc = s.imCat || 'LINE名', imMode = s.imMode || 'to', imCal = s.imCal || { y: 2026, m: 10 }, imDays = s.imDays == null ? '7' : String(s.imDays), imFolder = s.imFolder || '基本情報', FK = ['ymdw', 'ymd', 'mdw', 'md', 'slw', 'sl', 'smw', 'sm'], FG = { ymdw: '年月日区切り', ymd: '年月日区切り', mdw: '年月日区切り', md: '年月日区切り', slw: 'スラッシュ区切り', sl: 'スラッシュ区切り', smw: 'スラッシュ区切り', sm: 'スラッシュ区切り' };
+    const aD = new Date(2026, 10, 12 + (Number(imDays) || 0)), imAF = s.imAFmt || 'ymd', imDF = s.imDFmt || 'ymd', imDaysOk = /^\d+$/.test(imDays);
+    const OTH = { '回答フォームURL': ['フォルダ', '回答フォーム', '回答フォーム'], '商品販売ページURL': ['商品', 'ページ', '商品'], 'サロン・面談予約': ['カレンダー', 'ページ', 'カレンダー'], 'レッスン予約': ['レッスンカテゴリ', 'レッスン', 'レッスン'], 'イベント予約URL': ['イベント', 'ページ', 'イベント'] };
+    const imTag = () => { if (imc === 'LINE名') return '{name}';
+      if (imc === '経過日数・指定日付') return imMode === 'to' ? (s.imDate ? '[DAYS_TO:' + s.imDate + ']' : '') : (imDaysOk ? '[DATE_AFTER:' + Number(imDays) + ':' + imAF + ']' : '');
+      if (imc === '配信日の日付') return '[DELIVERY_DATE:' + imDF + ']';
+      if (imc === '友だち情報') return s.imItem || ''; return ''; };
+    const imFirst = Object.keys(FI)[0], fdays = s.imDate ? Math.round((new Date(...s.imDate.split('/').map((v, i) => i === 1 ? v - 1 : +v)) - DD) / 864e5) : 0;
+    const fmtItems = (cur, key, base) => FK.map(k => ({ label: fmtD(base, k), group: FG[k], pick: () => set({ [key]: k, imFmtOpen: null }), style: 'display:flex;justify-content:space-between;align-items:center;padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (cur === k ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })), dotC = on => radioDot(on), fmtOpts = (cur, key, base) => FK.map(k => ({ label: fmtD(base, k), pick: () => set({ [key]: k }), dot: dotC(cur === k) }));
+    const calFirst = new Date(imCal.y, imCal.m, 1).getDay(), calDays = new Date(imCal.y, imCal.m + 1, 0).getDate(), imCells = [];
+    for (let i = 0; i < calFirst; i++) imCells.push({ label: '', pick: () => {}, style: 'height:30px' });
+    for (let d = 1; d <= calDays; d++) { const ds = imCal.y + '/' + pad(imCal.m + 1) + '/' + pad(d); imCells.push({ label: d, pick: () => set({ imDate: ds, imCalOpen: false }), style: 'height:30px;display:flex;align-items:center;justify-content:center;border-radius:4px;font-size:14px;cursor:pointer;' + (s.imDate === ds ? 'background:#08BF5A;color:#fff;font-weight:600' : 'color:#222222') }); }
+    const imOk = !!imTag();
+    const imHint = imOk ? '' : imc === '経過日数・指定日付' ? (imMode === 'to' ? '日付を選択してください' : '経過日数を0以上の整数で入力してください') : imc === '友だち情報' ? '友だち情報の項目を選択してください' : OTH[imc] ? OTH[imc][2] + 'が未登録のため挿入できません。選択が必要です' : '';
+    const imVals = { imOpen: !!s.imOpen, imClose: () => set({ imOpen: false }),
+      imCats: IC.map(label => ({ label, pick: () => set({ imCat: label, imCalOpen: false, imFmtOpen: null }), dot: radioDot(imc === label), style: 'display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (imc === label ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })),
+      imLine: imc === 'LINE名', imLineDot: radioDot(true), imElapsed: imc === '経過日数・指定日付', imDelivery: imc === '配信日の日付', imFriend: imc === '友だち情報', imOther: !!OTH[imc],
+      imASt: 'border:1px solid #E0E0E0;border-radius:8px;padding:14px;' + (imMode === 'to' ? '' : 'opacity:.5;pointer-events:none'), imBSt: 'border:1px solid #E0E0E0;border-radius:8px;padding:14px;' + (imMode === 'after' ? '' : 'opacity:.5;pointer-events:none'),
+      imAPick: () => set({ imMode: 'to', imFmtOpen: null }), imBPick: () => set({ imMode: 'after', imCalOpen: false }), imADot: radioDot(imMode === 'to'), imBDot: radioDot(imMode === 'after'), imBOff: imMode !== 'after',
+      imDateText: s.imDate || '日付を選択', imDateStyle: s.imDate ? 'color:#222' : 'color:#888', imCalOpen: imMode === 'to' && !!s.imCalOpen, imDateTog: () => set({ imCalOpen: !s.imCalOpen }),
+      imFmtOpenB: s.imFmtOpen === 'b', imFmtTogB: () => set({ imFmtOpen: s.imFmtOpen === 'b' ? null : 'b' }), imAfterFmtLabel: fmtD(aD, imAF), imAfterFmtItems: fmtItems(imAF, 'imAFmt', aD),
+      imFmtOpenD: s.imFmtOpen === 'd', imFmtTogD: () => set({ imFmtOpen: s.imFmtOpen === 'd' ? null : 'd' }), imDelFmtLabel: fmtD(DD, imDF), imDelFmtItems: fmtItems(imDF, 'imDFmt', DD), imDelPv: fmtD(DD, imDF),
+      imAfterPv: imDaysOk ? '計算結果（サンプル）：配信日の' + Number(imDays) + '日後は ' + fmtD(aD, imAF) : '経過日数を0以上の整数で入力してください',
+      imCalTitle: imCal.y + '年' + (imCal.m + 1) + '月', imCells, imPrev: () => set({ imCal: imCal.m === 0 ? { y: imCal.y - 1, m: 11 } : { y: imCal.y, m: imCal.m - 1 } }), imNext: () => set({ imCal: imCal.m === 11 ? { y: imCal.y + 1, m: 0 } : { y: imCal.y, m: imCal.m + 1 } }),
+      imToPv: s.imDate ? '配信日（2026/11/12）から' + s.imDate + 'まで：' + fdays + '日' : '日付を選択してください',
+      imDays, setImDays: e => set({ imDays: String(e.target.value).replace(/[^0-9]/g, '') }), 
+      imFolders: Object.keys(FI).map(name => ({ name, pick: () => set({ imFolder: name, imItem: null }), style: 'display:flex;justify-content:space-between;padding:9px 10px;font-size:14px;cursor:pointer;border-radius:4px;' + (imFolder === name ? 'background:#08BF5A;color:#fff;font-weight:600' : 'color:#222222') })),
+      imItems: FI[imFolder].map(([name, tag]) => ({ name, pick: () => set({ imItem: tag }), dot: radioDot(s.imItem === tag) })), imItemsEmpty: FI[imFolder].length === 0,
+      imCol2: OTH[imc] ? OTH[imc][0] : '', imCol3: OTH[imc] ? OTH[imc][1] : '', imEmptyMsg: OTH[imc] ? '登録されている' + OTH[imc][2] + 'はありません' : '',
+      imHint, imInsStyle: 'height:42px;padding:0 26px;border:0;border-radius:6px;font-size:14px;font-weight:600;color:#fff;background:' + (imOk ? '#08BF5A' : '#b8c2bc') + ';cursor:' + (imOk ? 'pointer' : 'not-allowed'),
+      imInsert: () => { const tag = imTag(); if (!tag) return; set({ imOpen: false, t2tab: 'text' }); insT(tag); } };
+    const t2Vals = { ...imVals,
+      nameCount: s.newName.length, newFolder: s.newFolder, folderOpen: s.folderOpen, folderTog: () => set({ folderOpen: !s.folderOpen }),
+      folderItems: ['未分類', 'お客様向け', 'キャンペーン'].map(label => ({ label, pick: () => set({ newFolder: label, folderOpen: false }), style: 'padding:9px 12px;font-size:14px;cursor:pointer;border-radius:4px;' + (s.newFolder === label ? 'background:#F4FBF2;color:#23814D;font-weight:600' : 'color:#222222') })),
+      t2Text: s.t2tab === 'text', t2Url: s.t2tab === 'url',
+      t2Tabs: [['text', 'テキスト登録'], ['url', 'URL表示期限・アクション設定']].map(([k, label]) => ({ label, pick: () => set({ t2tab: k }), style: 'padding:10px 20px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:-1px;color:' + (s.t2tab === k ? '#23814D' : '#777') + ';border-bottom:2px solid ' + (s.t2tab === k ? '#08BF5A' : 'transparent') })),
+      tbIns: tb(!!s.imOpen), tbPdf: tb(!!s.pdfOpen), tbEmoji: tb(s.tp === 'emoji'), tpIns: s.tp === 'ins', tpPdf: s.tp === 'pdf', tpEmoji: s.tp === 'emoji',
+      tpInsTog: () => set({ imOpen: true, tp: null }), tpPdfTog: () => set({ pdfOpen: true, pdf: null, tp: null }), tpEmojiTog: tpT('emoji'),
+      insItems: T2.map(([label, tag]) => ({ label, pick: () => insT(tag) })),
+      emojiCats: EM.map((c, i) => ({ label: c.i, name: c.n, pick: () => set({ emojiCat: i, emojiQ: '' }), style: 'width:40px;height:34px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border-radius:6px;' + (!(s.emojiQ || '').trim().toLowerCase() && s.emojiCat === i ? 'background:#e3f6ea' : '') })),
+      emojiQ: s.emojiQ || '', setEmojiQ: e => set({ emojiQ: e.target.value }), emojiClose: () => set({ tp: null }),
+      emojiHead: (s.emojiQ || '').trim().toLowerCase() ? '検索結果' : EM[s.emojiCat].n,
+      emojiItems: ((s.emojiQ || '').trim().toLowerCase() ? EM.flatMap(c => c.l).filter(([ch, kw]) => (kw + ch).toLowerCase().includes((s.emojiQ || '').trim().toLowerCase())) : EM[s.emojiCat].l).map(([ch, kw]) => ({ ch, kw, add: () => insT(ch, true) })),
+      emojiEmpty: !!(s.emojiQ || '').trim().toLowerCase() && !EM.flatMap(c => c.l).some(([ch, kw]) => (kw + ch).toLowerCase().includes((s.emojiQ || '').trim().toLowerCase())),
+      pdfOpen: !!s.pdfOpen, pdfClose: () => set({ pdfOpen: false, pdf: null }), pdfUrl, pdfNone: !pdf || !pdf.name, txErr: s.txErr || '',
+      pdfBrowse: () => { const i = document.getElementById('pdf-in'); if (i) i.click(); }, pdfPick: e => pickFile(e.target.files && e.target.files[0]),
+      pdfOver: e => e.preventDefault(), pdfDrop: e => { e.preventDefault(); pickFile(e.dataTransfer.files && e.dataTransfer.files[0]); },
+      pdfZone: 'border:1.5px dashed #9ab;border-radius:8px;padding:22px;text-align:center;cursor:pointer;background:#F8F8F8',
+      pdfErr: pdf && pdf.error || '', pdfHas: !!pdf && !!pdf.name, pdfName: pdf && pdf.name || '', pdfSize: pdf && pdf.size ? (pdf.size / 1024 / 1024 >= 1 ? (pdf.size / 1024 / 1024).toFixed(1) + 'MB' : Math.max(1, Math.round(pdf.size / 1024)) + 'KB') : '',
+      pdfReady: !!pdf && pdf.status === 'ready', pdfBusy: !!pdf && pdf.status === 'busy', pdfDone: !!pdf && pdf.status === 'done',
+      pdfUpload: () => { set({ pdf: { ...pdf, status: 'busy' } }); setTimeout(() => this.setState(st => st.pdf ? { pdf: { ...st.pdf, status: 'done' } } : null), 900); },
+      pdfInsert: () => { set({ pdfOpen: false, pdf: null }); insT(pdfUrl); },
+      runOpts: [['once', '一度のみ稼働'], ['multi', '何度でも稼働']].map(([k, label]) => ({ label, pick: () => set({ runMode: k }), dot: radioDot(s.runMode === k) })),
+      pvOpts: [['show', '表示する'], ['hide', '表示しない']].map(([k, label]) => ({ label, pick: () => set({ urlPv: k }), dot: radioDot(s.urlPv === k) })) };
+    const A = (tag, text) => ({ tag, text, style: bs(tag === '改善' ? '#5799DB' : '#e8590c').replace('margin-left:8px', 'margin-left:0') });
+    const annos = [[A('改善', 'アクションを1つずつ追加し、その場で展開'), A('改善', 'カードごとに編集・折りたたみ・削除（削除は確認あり）'), A('改善', '入力内容を保持／未設定カードにエラー表示'), A('改善', '編集中のカードを青枠で表示'), A('新規', '「＋新しいテンプレートを作成」')],
+      [A('新規', 'モーダル内でテンプレート作成（画面移動なし）'), A('新規', 'リアルタイムLINEプレビュー'), A('新規', '「作成して紐づける」で自動紐づけ＋共通一覧へ登録')],
+      [A('新規', '紐づけ完了・動作プレビュー'), A('新規', '使用箇所一覧と各設定画面への導線'), A('新規', '複数箇所使用時の編集範囲選択')]][sc - 1];
+    const buildMsgs = (acts, rounds) => {
+      const mkText = (text, err) => ({ isText: true, isPanel: false, text, bot: true, rowStyle: 'flex:none;display:flex;gap:6px;align-items:flex-start', bubble: 'background:#fff;border-radius:14px;max-width:200px;padding:10px 12px;font-size:14px;line-height:1.55;white-space:pre-wrap;word-break:break-all;' + (err ? 'color:#F44336;border:1px dashed #e0a0a0' : '') });
+      const mkPanel = (t) => { const p = (t.panels || [])[0] || {}, ct = t.ctype || 'std', hex = v => /^#[0-9a-fA-F]{6}$/.test(v || '');
+        return { isText: false, isPanel: true, bot: true, rowStyle: 'flex:none;display:flex;gap:6px;align-items:flex-start', hasImg: !!p.img, hasTitle: !!(p.title || '').trim(), title: pv2(p.title || ''), body: pv2(p.body || ''),
+          btns: (p.btns || []).map(b => ({ text: b.text || 'ボタン', style: (ct === 'color' ? 'margin:6px 10px 10px;border-radius:6px;' : 'border-top:1px solid #eee;') + 'text-align:center;font-weight:600;padding:10px;font-size:14px;background:' + (hex(b.bg) ? b.bg : '#fff') + ';color:' + (hex(b.fg) ? b.fg : '#5799DB') })) }; };
+      const one = [];
+      acts.forEach((a, i) => { const n = 'アクション' + (i + 1);
+        if (a.type === 'tpl') { if (!a.tplId) { one.push(mkText(n + 'にテンプレートが紐づいていません', true)); return; } const t = s.tpls.find(x => x.id === a.tplId);
+          if (!t) { one.push(mkText(n + '：テンプレートID「' + a.tplId + '」のデータが見つかりません', true)); return; }
+          if (t.mtype === 'panel') { one.push(mkPanel(t)); return; }
+          const b = t.mtype === 'text' && t.text != null ? t.text : t.body; if (!b || !b.trim()) { one.push(mkText('テンプレート「' + t.name + '」の本文が空です', true)); return; } one.push(mkText(pv2(b))); }
+        else if (a.type === 'text' && (a.val || '').trim()) one.push(mkText(pv2(a.val))); });
+      if (!one.length) one.push(mkText('紐づいたアクションがありません（保存済みの設定が空です）', true));
+      const res = []; for (let r = 0; r < Math.max(1, rounds || 1); r++) { res.push({ isText: true, isPanel: false, text: 'エリア1をタップ', bot: false, rowStyle: 'flex:none;display:flex;gap:6px;justify-content:flex-end', bubble: 'background:#8de055;border-radius:14px;max-width:200px;padding:8px 12px;font-size:14px' }); one.forEach(m => res.push(m)); }
+      return res; };
+    const R = { ...tagVals, showAdd: false, steps, nav, notes: s.notes, toggleNotes: () => set({ notes: !s.notes }), bNew,
+      s1: sc === 1 && !s.done && !s.closed1, s2: sc === 2 && !s.done, s3: sc === 3 && !s.done, done: s.done, restart: () => set({ ...reset(), done: false, screen: 1, tapped: false, closed1: false }),
+      anyModal: s.done || sc !== 1 || !s.closed1, backToMenu: () => set({ ...reset(), done: false, screen: 1, tapped: false, closed1: true }),
+      close: () => set({ ...reset(), closed1: true }), reopen1: () => set({ closed1: false }),
+      ...(() => { const sv = (s.saved || []).filter(valid), norm = arr => JSON.stringify((arr || []).map(({ open, oOpen, ...r }) => r)), dirty = norm(s.actions) !== norm(s.saved || this.initActions()), kinds = [...new Set(sv.map(a => TY[a.type].t))];
+        const cc = (c, b) => 'font-size:12px;line-height:16px;font-weight:500;border-radius:10px;padding:2px 10px;color:' + c + ';background:' + b;
+        return { savedActs: sv.map((a, i) => ({ num: i + 1, kind: TY[a.type].t, detailLabel: a.type === 'tpl' ? 'テンプレート名' : '設定内容', detail: a.type === 'tpl' ? ((s.tpls.find(t => t.id === a.tplId) || {}).name || '') : sumOf(a, null) })), hasSavedActs: sv.length > 0,
+          area1Sum: sv.length ? 'アクション' + sv.length + '件（' + kinds.join('・') + '）' : 'アクションは未設定です',
+          areaCheckOff: !sv.length, areaCheckWhy: '未設定のため、動作を確認できません。先にアクションを設定して保存してください。', areaCheck: () => { if (sv.length) set({ pvPop: true, tsNote: false }); },
+          areaCheckStyle: 'height:34px;padding:0 16px;border-radius:6px;font-size:14px;font-weight:400;border:1px solid ' + (sv.length ? '#08BF5A' : '#E0E0E0') + ';background:#fff;color:' + (sv.length ? '#23814D' : '#aaa') + ';cursor:' + (sv.length ? 'pointer' : 'not-allowed'),
+          areaStatus: dirty ? '未保存' : sv.length ? '✓ 保存済み' : '未設定', areaChip: dirty ? cc('#8a5a10', '#FEF5E4') : sv.length ? cc('#23814D', '#F4FBF2') : cc('#888888', '#F8F8F8'),
+          saveStatus: dirty ? '未保存の変更あり' : (s.saved ? '保存済み' : '未保存'), saveChip: dirty ? cc('#b4690e', '#FEF5E4') : cc('#555', '#eef1f3') }; })(), q: s.q, setQ: e => set({ q: e.target.value }), cat: s.cat, setCat: e => set({ cat: e.target.value }),
+      acts, menu, menuAll, menuMore, mmMain: s.mm !== 'all', mmAll: s.mm === 'all', backMenu: () => set({ mm: 'main' }), menuOpen: s.menuOpen, toggleMenu: () => set({ menuOpen: !s.menuOpen, mm: 'main' }), back1: () => set({ screen: 1, dlg: false, t2tried: false, closed1: false }),
+      hint1, hintStyle: `flex:1;font-size:14px;color:${s.tried && !allOk ? '#b4690e' : '#777'};font-weight:${s.tried && !allOk ? 500 : 400}`,
+      saveStyle: btn(allOk).replace('not-allowed', 'pointer'),
+      save1: () => { if (!allOk) { this._sc = s.actions[bad].id; set({ tried: true, menuOpen: false, actions: s.actions.map(a => valid(a) ? a : { ...a, open: true }) }); return; }
+        const ft = s.actions.find(a => a.type === 'tpl' && a.tplId); const go = this._chgGo; this._chgGo = false; const pId = ((s.saved || []).find(a => a.type === 'tpl' && a.tplId) || {}).tplId, pT = pId && s.tpls.find(t => t.id === pId), nT = ft && s.tpls.find(t => t.id === ft.tplId);
+        if (!go && pT && nT && ft.tplId !== pId) { set({ chg: { kind: 'save1', prev: pT.name, next: nT.name } }); return; }
+        set({ screen: 3, tapped: false, tried: false, selId: ft ? ft.tplId : null, saved: JSON.parse(JSON.stringify(s.actions)) }); },
+      ...t2Vals, errTotal: !!s.t2tried && errTotalN > 0, errBanner: '未入力の必須項目が' + errTotalN + '件あります', errName: !!s.t2tried && nameBad, errText: !!s.t2tried && textBad, errBody: !!s.t2tried && !!pBad[ap] && pBad[ap].body,
+      nameStyle: fld(nameBad, 'height:44px;padding:0 14px;font-size:14px'), textStyle: fld(textBad, 'height:150px;padding:12px 14px;font-size:14px;line-height:1.6;resize:none'), bodyStyle: fld(!!pBad[ap] && pBad[ap].body, 'height:72px;padding:10px 12px;font-size:14px;resize:none'), newName: s.newName, setName: e => set({ newName: e.target.value.slice(0, 20) }), newText: s.newText, setText: e => set({ newText: e.target.value.slice(0, 5000), txErr: '' }), textLen: s.newText.length,
+      mtypes, ctypes, tabs, panelChips, btns, isTextT: s.mtype === 'text', isPanelT: pvB, isOtherT: s.mtype !== 'text' && !pvB, tabPanel: s.tab === 'panel', tabDetail: s.tab === 'detail',
+      addPanel: () => P.length < 10 && setP([...P, { title: '', body: '', img: false, btns: [mkBtn()] }], { ap: P.length }), addPanelStyle: `height:40px;padding:0 22px;border:0;border-radius:4px;background:${P.length < 10 ? '#5799DB' : '#b8c2bc'};color:#fff;font-size:14px;cursor:pointer`,
+      multiPanel: P.length > 1, editTitle: 'パネル' + (ap + 1) + '編集', panelNo: (ap + 1) + ' / ' + P.length, delPanel: () => setP(P.filter((_, i) => i !== ap), { ap: Math.max(0, ap - 1) }),
+      imgBtn: cp.img ? '画像を変更' : 'アップロード', imgState: cp.img ? 'sample.jpg を登録済み' : '画像は未登録です', toggleImg: () => updP({ img: !cp.img }),
+      pTitle: cp.title, setTitle: e => updP({ title: e.target.value.slice(0, 40) }), titleCount: cp.title.length, titleName: insP('title', 40, '{LINE名}'), titleEmoji: insP('title', 40, '😊'),
+      pBody: cp.body, setBody: e => updP({ body: e.target.value.slice(0, 60) }), bodyCount: cp.body.length, bodyName: insP('body', 60, '{LINE名}'), bodyEmoji: insP('body', 60, '😊'),
+      addBtn: () => { if (cp.btns.length >= maxB) return; const nb2 = mkBtn(); this._sc2 = 'btn-card-' + nb2.id; updP({ btns: [...cp.btns, nb2] }); }, addBtnStyle: 'height:40px;padding:0 22px;border:0;border-radius:4px;color:#fff;font-size:14px;background:' + (cp.btns.length < maxB ? '#5799DB;cursor:pointer' : '#b8c2bc;cursor:not-allowed'),
+      btnNote: cp.btns.length >= maxB ? '※上限（' + maxB + '個）に達しています。' + (P.length === 1 ? 'パネルが2枚以上の場合は3個までです。' : '') : '※パネル1枚の場合は4個、パネル2枚以上の場合は3個まで登録できます。',
+      altText: s.altText, setAlt: e => set({ altText: e.target.value }),
+      pvImg: pvB && (cp.img || ct === 'img'), imgH: ct === 'img' ? '200px' : '110px', pvBody: s.mtype === 'text' || (pvB && ct !== 'img'), pvTitle: pvB && !!cp.title, previewTitle: cp.title,
+      previewText: s.mtype === 'text' ? (s.newText.trim() ? pv2(s.newText) : 'まだ本文が入力されていません') : (cp.body.trim() ? pv2(cp.body) : '本文が未入力です'), pvTextColor: (s.mtype === 'text' ? s.newText.trim() : cp.body.trim()) ? '#333' : '#aaa', pvBtns, pvQr: pvB && ct === 'qr', pvChips: cp.btns.map(b => ({ text: b.text || 'ボタン' })),
+      hint2: s.t2tried && errTotalN > 0 ? '未入力の必須項目を入力してください' : (s.editId ? '既存の紐づけはそのまま維持されます' : 'リッチメニューのエリア1へ紐づけます'),
+      createStyle: btn(true), createLink: () => { const fe = firstErr(); if (fe) { this._sc2 = fe.id; set({ t2tried: true, ...(fe.ap != null ? { ap: fe.ap, tab: 'panel' } : {}), ...(fe.bj != null ? { panels: P.map((p, i) => i === fe.ap ? { ...p, btns: p.btns.map((b, k) => k === fe.bj ? { ...b, open: true } : b) } : p) } : {}), ...(fe.tab2 ? { t2tab: 'text' } : {}) }); return; }
+        const content = { mtype: s.mtype, text: s.newText, panels: JSON.parse(JSON.stringify(P)), ctype: s.ctype, altText: s.altText, runMode: s.runMode, urlPv: s.urlPv }, nm = s.newName.trim();
+        { const go = this._chgGo; this._chgGo = false; const pId = ((s.saved || []).find(a => a.type === 'tpl' && a.tplId) || {}).tplId, pT = pId && s.tpls.find(t => t.id === pId);
+          if (!go && pT && !(s.editId && !s.editCopy)) { set({ chg: { kind: 'create', prev: pT.name, next: nm } }); return; } }
+        if (s.editId && !s.editCopy) { set({ ...this.blankForm(), tpls: s.tpls.map(t => t.id === s.editId ? { ...t, name: nm, folder: s.newFolder, body: bodyOfCur, ...content } : t), selId: s.editId, screen: 3, tapped: false }); return; }
+        if (s.editId && s.editCopy) { const nid = 'n' + Date.now(), ca = s.actions.find(a => a.type === 'tpl' && a.tplId === s.editId); set({ ...this.blankForm(), tpls: [{ id: nid, name: nm, folder: s.newFolder, body: bodyOfCur, usage: 0, uses: [], isNew: true, ...content }, ...s.tpls], selId: nid, actions: s.actions.map(a => ca && a.id === ca.id ? { ...a, tplId: nid } : a), saved: JSON.parse(JSON.stringify(s.actions.map(a => ca && a.id === ca.id ? { ...a, tplId: nid } : a))), screen: 3, tapped: false, closed1: false }); return; }
+        const id = 'n' + Date.now(), tplA = x => x && x.type === 'tpl';
+        const tgt = s.actions.find(a => a.id === s.createFor && tplA(a)) || s.actions.find(a => a.id === s.activeId && tplA(a)) || s.actions.find(a => tplA(a) && !a.tplId) || s.actions.find(tplA);
+        const nAct = tgt ? s.actions.map(a => a.id === tgt.id ? { ...a, tplId: id, open: true } : a) : [...s.actions, { id: 'n' + s.nid, type: 'tpl', tplId: id, val: '', open: true }];
+        set({ ...this.blankForm(), createFor: null, nid: tgt ? s.nid : s.nid + 1, activeId: tgt ? tgt.id : 'n' + s.nid, tpls: [{ id, name: nm, folder: s.newFolder, body: bodyOfCur, ...content, usage: 0, uses: [], isNew: true }, ...s.tpls], selId: id, actions: nAct, saved: JSON.parse(JSON.stringify(nAct)), screen: 3, tapped: false, closed1: false }); },
+      t2Title: s.editId ? (s.editCopy ? 'テンプレートのコピーを作成' : 'テンプレートを編集') : '新しいテンプレートを作成', t2BackLabel: s.editId ? '‹ 設定確認に戻る' : '‹ アクション設定に戻る',
+      t2Back: () => s.editId ? set({ ...this.blankForm(), screen: 3 }) : set({ screen: 1, dlg: false, t2tried: false, closed1: false }),
+      t2Notice: s.editId ? (s.editCopy ? 'コピーを作成し、現在のアクションだけに紐づけます。他の使用箇所には影響しません。' : '編集内容は、このテンプレートを使用しているすべての箇所に反映されます。') : '作成後、リッチメニューのエリア1のアクションへ自動で紐づきます。共通テンプレート一覧にも登録され、ほかの機能でも再利用できます。',
+      t2Create: s.editId ? '保存して設定確認に戻る' : '作成して紐づける', actNum: ai >= 0 ? ai + 1 : 1,
+      goAct: () => { this._sc = aidT; set({ screen: 1, closed1: false, dlg: false, pop: null, activeId: aidT, actions: s.actions.map(a => a.id === aidT ? { ...a, open: true } : a) }); },
+      editShared: () => startEdit(false), editCopyB: () => startEdit(true),
+      otherActs, hasOthers: otherActs.length > 0, pvMsgs: buildMsgs(s.actions, s.tapRounds), tsMsgs: buildMsgs(s.saved || [], 1).filter(m => m.bot), pvPop: !!s.pvPop, pvPopClose: () => set({ pvPop: false, tsNote: false }),
+      ...(() => { const U = ['神田 史', '佐藤 花子', '田中 健', '鈴木 美咲', '高橋 大輝'], q = (s.tsQ || '').trim(), list = U.filter(n => !q || n.includes(q)), ft = (s.saved || []).find(a => a.type === 'tpl' && a.tplId), t = ft && s.tpls.find(x => x.id === ft.tplId), ok = !!s.tsUser;
+        return { tsTplName: t ? '「' + t.name + '」' : '', tsQ: s.tsQ || '', setTsQ: e => set({ tsQ: e.target.value }), tsNoUser: list.length === 0,
+          tsUsers: list.map(n => ({ name: n, pick: () => set({ tsUser: n, tsNote: false }), dot: 'width:16px;height:16px;border-radius:50%;box-sizing:border-box;flex:none;background:#fff;border:' + (s.tsUser === n ? '5px solid #08BF5A' : '1.5px solid #bbb'), style: 'display:flex;align-items:center;gap:10px;padding:10px 14px;font-size:14px;cursor:pointer;border-bottom:1px solid #E0E0E0;background:' + (s.tsUser === n ? '#F4FBF2' : '#fff') })),
+          tsSel: ok ? '選択中の送信先：' + s.tsUser : '送信先が選択されていません', tsHint: ok ? '' : '送信先を選択してください', tsNote: !!s.tsNote,
+          tsSend: () => { if (ok) set({ tsNote: true }); }, tsSendStyle: 'height:42px;padding:0 26px;border:0;border-radius:6px;font-size:14px;font-weight:600;color:#fff;background:' + (ok ? '#08BF5A' : '#b8c2bc') + ';cursor:' + (ok ? 'pointer' : 'not-allowed') }; })(),
+      navTo: s.navTo || '', closeNav: () => set({ navTo: '' }),
+      toggleUse: () => set({ useOpen: !s.useOpen }), useOpen: !!s.useOpen, useChev: s.useOpen ? '⌃' : '⌄', useChevText: s.useOpen ? '閉じる' : '一覧を見る', realCount: uses.filter(u => u.now).length, realUses: uses.filter(u => u.now), demoUses: uses.filter(u => !u.now), hasDemo: uses.some(u => !u.now),
+      kindCounts: ['リッチメニュー', 'ステップ配信'].map(k => k + ' ' + uses.filter(u => u.kind === k).length + '件').join('・') + '（実際の設定 ' + uses.filter(u => u.now).length + '・デモ ' + uses.filter(u => !u.now).length + '）',
+      cur, uses, tapped: s.tapped, tap: () => { this.setState(st => ({ tapped: true, tapCount: (st.tapCount || 0) + 1, tapRounds: Math.min((st.tapRounds || 0) + 1, 3) })); setTimeout(() => { const el = document.getElementById('pv3'); if (el) el.scrollTop = el.scrollHeight; }, 50); }, dlg: s.dlg, closeDlg: () => set({ dlg: false }),
+      chgOpen: !!s.chg, chgPrev: s.chg ? s.chg.prev : '', chgNext: s.chg ? s.chg.next : '', chgCancel: () => set({ chg: null }),
+      chgProceed: () => { this._chgGo = true; const k = s.chg && s.chg.kind; set({ chg: null }); if (k === 'save1') R.save1(); else R.createLink(); },
+      editTpl: () => cur.total > 1 ? set({ dlg: true }) : startEdit(false), finish: () => { const sv = JSON.parse(JSON.stringify(s.actions)); set({ saved: sv, actions: JSON.parse(JSON.stringify(sv)), done: false, screen: 1, closed1: true, tapped: false, tapRounds: 0, menuOpen: false, delId: null, tried: false, activeId: 'a1', q: '', notice: true }); },
+      noticeOpen: !!s.notice && !s.pvPop, noticeLater: () => set({ notice: false }), noticeCheck: () => set({ notice: false, pvPop: true, tsNote: false }),
+      noticeText: (() => { const ft = (s.saved || s.actions).find(a => a.type === 'tpl' && a.tplId), t = ft && s.tpls.find(x => x.id === ft.tplId); return t ? 'エリア1に「' + t.name + '」を設定しました。' : 'エリア1にアクションを設定しました。'; })(), annos };
+    this._R = R; return R;
+  }
+}
+</script>
+</body>
+</html>
